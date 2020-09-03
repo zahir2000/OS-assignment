@@ -103,5 +103,4 @@ if [[ $response == 'b' ]]; then
     ./EmpValidationForm.sh
 elif [[ $response == 'y' ]]; then
 
-    
 fi
