@@ -1,0 +1,3 @@
+AF:790909-13-1234:Tan Mei Lee:012-12345678:tanml@bacs.my:Female:09-09-1979:Accountant:05-12-1998
+IT: 810808-06-1233:Chun Wai Kit:012-2034521: chunwk@bacs.my:Male:08-08-1981:Administator:03-10-1999
+SM:800909-14-5051:Tan Lee Wah:017-3310668: tanlw@bacs.my:Male:09-09-1980:Sales Advisor:09-09-2003
