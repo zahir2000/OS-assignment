@@ -1,9 +1,9 @@
                        Employee Performance Review
                      ===============================
 
-Employee IC. Number    : 111111-11-1111
-Employee Name          : Zahir Sher
-Review Period          : From 01-2000 To 08-2000
+Employee IC. Number    : 790909-13-1234
+Employee Name          : Tan Mei Lee
+Review Period          : From 08-2000 To 09-2000
 
 ==============================================================================
 KPI Criteria:              Rate Obtained:               Comments:             

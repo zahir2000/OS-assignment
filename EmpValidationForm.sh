@@ -2,13 +2,15 @@
 
 REGEX_IC="^([0-9]{6}-[0-9]{2}-[0-9]{4})|(q)$"
 REGEX_PERIOD="^(((0[1-9])|(1[0-2]))-[0-9]{4})|(q)$"
-REGEX_RESPONSE="^(n|q)$"
+REGEX_RESPONSE="^((n|N)|(q|Q))$"
 
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 YELLOW="\033[0;33m"
 NC="\033[0m"
+BOLD="\033[1m"
+ITALIC="\033[3m"
 
 filename="Employee.txt"
 employee=""
@@ -44,12 +46,12 @@ checkDate() {
 clear
 
 printf "%s\n" "+————————————————————————————————————————————————+"
-printf "%s\n" "|            Employee Validation Form            |"
+printf "%s ${BOLD}%s${NC} %s\n" "|" "           Employee Validation Form           " "|"
 printf "%s\n\n" "+————————————————————————————————————————————————+"
 
 while
 echo "Please Enter The Review Period:-"
-echo -n "FROM (mm-yyyy): " 
+echo -en "FROM (${GREEN}mm-yyyy${NC}): " 
 read from;
 
 while [[ !($from =~ $REGEX_PERIOD) ]]; do
@@ -59,11 +61,6 @@ while [[ !($from =~ $REGEX_PERIOD) ]]; do
 	echo
 	echo -n "FROM (mm-yyyy): " 
 	read from;
-	
-	if [ $from == 'q' ]; then
-		#Return to Menu
-		exit 1;
-	fi
 done
 
 if [[ $from == 'q' ]]; then
@@ -71,7 +68,7 @@ if [[ $from == 'q' ]]; then
     exit 0;
 fi
 
-echo -n "TO   (mm-yyyy): " 
+echo -en "TO   (${GREEN}mm-yyyy${NC}): " 
 read to;
 
 while [[ !($to =~ $REGEX_PERIOD) ]]; do
@@ -81,11 +78,6 @@ while [[ !($to =~ $REGEX_PERIOD) ]]; do
 	echo
 	echo -n "TO (mm-yyyy): " 
 	read to;
-	
-	if [ $to == 'q' ]; then
-		#Return to Menu
-		exit 1;
-	fi
 done
 
 if [[ $to == 'q' ]]; then
@@ -106,7 +98,7 @@ echo;
 while
 
 echo "Please Enter the Employee's IC. Number:-"
-echo -n "(xxxxxx-xx-xxxx): "
+echo -en "(${GREEN}xxxxxx-xx-xxxx${NC}): "
 read icNo;
 
 while
@@ -117,7 +109,7 @@ while
 		echo -e "${RED}Incorrect IC. Number entered.${NC}"
 		echo -e "Please follow (${GREEN}xxxxxx-xx-xxxx${NC}) format. Enter (${RED}q${NC}) to quit."
 		echo
-		echo -n "IC (xxxxxx-xx-xxxx): "
+		echo -en "IC (${GREEN}xxxxxx-xx-xxxx${NC}): "
 		read icNo;
 	fi
 	
@@ -135,30 +127,23 @@ done
 employeeFound=0
 
 if [ -f "$filename" -a -r "$filename" ]; then
-	while read line; do
-		while IFS=':' read -ra ADDR; do
-			for i in "${ADDR[1]}"; do
-				if [ "$icNo" == "${i//[[:blank:]]/}" ]; then
-					# "Match found!"
-					employee="$line"
-					employeeFound=1
-					break;
-				fi
-			done;
-		done <<< "$line"
-	done < $filename
+    while IFS=':' read -r empDep empIc empName empPh empEmail empGender empDob empJb empJoinDate ; do
+        if [ "$icNo" == "${empIc//[[:blank:]]/}" ]; then
+            name=$empName
+            jobTitle=$empJb
+            department=$empDep
+            employeeFound=1
+            break
+        fi
+    done < "$filename"
 fi
 
 if [[ employeeFound -eq 1 ]]; then
 
-	name=$(getName "$employee")
-	jobTitle=$(getJobTitle "$employee")
-	department=$(getDepartment "$employee")
-
 	echo;
-	echo -e "Employee Name: ${BLUE}$name${NC}"
-	echo; echo -e "Job Title: ${BLUE}$jobTitle${NC}"
-	echo; echo -e "Department: ${BLUE}$department${NC}"
+	echo -e "Employee Name  : ${BLUE}$name${NC}"
+	echo; echo -e "Job Title      : ${BLUE}$jobTitle${NC}"
+	echo; echo -e "Department     : ${BLUE}$department${NC}"
 
 	while
 	echo; echo -en "Press (${GREEN}n${NC}) to continue to the Employee Performance Review Form or (${RED}q${NC}) to quit from the prompt and return to Human Resource Management Menu: "
@@ -168,7 +153,7 @@ if [[ employeeFound -eq 1 ]]; then
 		echo;echo; echo -e "Please enter either (${GREEN}n${NC}) or (${RED}q${NC})"
 	fi
 
-	[[ $response != 'n' && $response != 'q' ]]
+	[[ !($response =~ $REGEX_RESPONSE) ]]
 
 	do :
 	done

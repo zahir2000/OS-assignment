@@ -5,23 +5,30 @@ clear
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
+PURPLE="\033[0;35m"
 YELLOW="\033[0;33m"
 NC="\033[0m"
 ITALIC="\033[3m"
+BOLD="\033[1m"
+UNDERLINE="\033[4m"
+BOLDGREEN="\033[32;1m"
+BOLDBLUE="\033[34;1m"
+BOLDPURPLE="\033[35;1m"
 
-#name="Zahir Sher"
-#icNo="111111-11-1111"
-#to="08-2000"
-#from="01-2000"
+name="Zahir Sher"
+icNo="111111-11-1111"
+to="08-2000"
+from="01-2000"
 
-name="$1"
-icNo="$2"
-to="$3"
-from="$4"
+#name="$1"
+#icNo="$2"
+#to="$3"
+#from="$4"
 
 REGEX_KPI="^(KPI_[0-9]{2})|(q|Q)$"
 REGEX_RATE="^(([0-9]|10)|(q|Q))$"
 REGEX_RESPONSE="^(y|b)$"
+REGEX_RESPONSE="^(m)|(d)|(r)$"
 
 kpiFile="KPI.txt"
 kpiCounter=0
@@ -54,8 +61,10 @@ getStaffPerformance() {
 
 while
 
+kpiDeleted=0
+
 printf "%s\n" "+————————————————————————————————————————————————+"
-printf "%s\n" "|        Employee Performance Review Form        |"
+printf "%s ${BOLD}%s${NC} %s\n" "|" "       Employee Performance Review Form       " "|"
 printf "%s\n" "+————————————————————————————————————————————————+"
 
 inCounter=0
@@ -79,7 +88,8 @@ while
 
 #Maybe the ability to modify the entered KPI Code.
 
-echo; echo -n "Please enter the KPI Code: "
+echo; echo "Please enter the KPI Code:-"
+echo -en "(${GREEN}KPI_XX${NC}): "
 read inKpiCode
 inKpiCode=$(echo "$inKpiCode" | tr 'a-z' 'A-Z')
 
@@ -117,42 +127,96 @@ fi
 if [ $kpiFound -eq 0 -a $kpiDuplicated -eq 0 ]; then
 	echo; echo -e "${BLUE}$inKpiCode${RED} does not exist. Enter (${YELLOW}q${RED}) to quit.${NC}"
 elif [[ $kpiDuplicated -eq 1 ]]; then
-    printf "\n${BLUE}$inKpiCode${RED} has already been selected. Please select another KPI criteria.${NC}\n"
+    
+        printf "\n${BLUE}$inKpiCode${RED} has already been selected.${NC}\n\n" #Please select another KPI criteria.${NC}\n"
+        printf "${UNDERLINE}Would you like to${NC}:-\n"
+        echo -e "(${GREEN}m${NC}) - Modify KPI Rate"
+        echo -e "(${RED}d${NC}) - Delete KPI Rate"
+        echo -e "(${YELLOW}r${NC}) - Select New KPI"
+        echo -n "Please select a choice: "; read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+
+    while
+        case "$choice" in
+            m)
+            ;;
+            d)
+                del=0
+                while [ $del -lt ${#kpiCode[@]} ]; do
+                    if [[ "$inKpiCode" == ${kpiCode[$del]} ]]; then
+                        delCriteria=${kpiCriteria[$del]}
+                        delRate=${perfRate[$del]}
+                        break
+                    fi
+                    del=$(( $del+1 ))
+                done
+                printf "\n\n${UNDERLINE}Are you sure you want to delete${NC}:\n=> ${BOLDBLUE}$inKpiCode${NC} (${BLUE}$delCriteria${NC}) with rate of ${BOLDPURPLE}$delRate${NC}"
+                printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "; read -n1 choice;
+
+                if [[ "$choice" == "y" ]]; then
+                    kpiCode=(${kpiCode[@]:0:$del} ${kpiCode[@]:$(($del + 1))})
+                    kpiCriteria=(${kpiCriteria[@]:0:$del} ${kpiCriteria[@]:$(($del + 1))})
+                    perfComment=(${perfComment[@]:0:$del} ${perfComment[@]:$(($del + 1))})
+                    perfRate=(${perfRate[@]:0:$del} ${perfRate[@]:$(($del + 1))})
+                    kpiCounter=$(( $kpiCounter - 1 ))
+                    kpiDeleted=1
+
+                    printf "\n\n${BOLDGREEN}KPI successfuly deleted.${NC}\n"
+                fi
+                ;;
+            r)
+                echo
+                ;;
+            *)
+                printf "\n\nInvalid choice entered. Please enter (${GREEN}m${NC}) or (${RED}d${NC}) or (${YELLOW}r${NC}).\n\n"
+                echo -n "Please select a choice: "; read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+        esac
+
+    [[ !($choice =~ $REGEX_CHOICE) ]]
+    do :
+    done
+fi
+
+if [[ $kpiDeleted -eq 1 ]]; then
+    break
 fi
 
 [[ $kpiFound -eq 0 || $kpiDuplicated -eq 1 ]]
 do :
 done
 
-echo; echo -e "KPI - Key Performance Indicator: ${BLUE}${kpiCriteria[$kpiCounter]}${NC}"
+if [[ $kpiDeleted -eq 0 ]]; then
 
-while
+    echo; echo -e "KPI - Key Performance Indicator: ${BLUE}${kpiCriteria[$kpiCounter]}${NC}"
 
-echo; echo -en "Please enter the Rate obtained (${ITALIC}max 10 - min 0${NC}): "
-read rate
+    while
 
-if [[ !($rate =~ $REGEX_RATE) ]]; then
-	echo; echo -e "${RED}Rate must be between ${BLUE}0 - 10${RED}. Enter (${YELLOW}q${RED}) to quit.${NC}";
+    echo; echo -en "Please enter the Rate obtained (${ITALIC}min 0 - max 10${NC}): "
+    read rate
+
+    if [[ !($rate =~ $REGEX_RATE) ]]; then
+        echo; echo -e "${RED}Rate must be between ${BLUE}0 - 10${RED}. Enter (${YELLOW}q${RED}) to quit.${NC}";
+    fi
+
+    if [ "$rate" == "q" ]; then
+        #Return to Menu
+        exit 1;
+    fi
+
+    [[ !($rate =~ $REGEX_RATE) ]]
+
+    do :
+    done
+
+    echo; echo -n "Comments (if any): "; read comments;
+
+    if [ -z "$comments" ]; then
+        comments="-"
+    fi
+
+    perfRate+=("$rate")
+    perfComment+=("$comments")
+
 fi
-
-if [ "$rate" == "q" ]; then
-	#Return to Menu
-	exit 1;
-fi
-
-[[ !($rate =~ $REGEX_RATE) ]]
-
-do :
-done
-
-echo; echo -n "Comments (if any): "; read comments;
-
-if [ -z "$comments" ]; then
-    comments="-"
-fi
-
-perfRate+=("$rate")
-perfComment+=("$comments")
 
 while
 	echo; echo -en "Press (${GREEN}y${NC}) to continue to enter the Employee's marks or (${RED}b${NC}) to return to the previous screen: "
@@ -176,9 +240,8 @@ if [ $isFirstTime -eq 1 -a -n "$name" -a -n "$icNo" -a -n "$to" -a -n "$from" ];
         printf "Employee Name          : $name\n"
         printf "Review Period          : From $from To $to\n\n"
         printf "==============================================================================\n"
-        printf "KPI Criteria:\t\t\t\tRate Obtained:\t\t\t\tComments:\t\n"
+        printf "%-26s %-28s %-22s\n" "KPI Criteria:" "Rate Obtained:" "Comments:"
         printf "==============================================================================\n"
-        #printf "%-32s %-22s %-22s" "$kpiCriteria" "$perfRate" "$perfComment"
     ) > "${icNo}KPIResult.txt"
     isFirstTime=0
 fi
