@@ -15,15 +15,15 @@ BOLDGREEN="\033[32;1m"
 BOLDBLUE="\033[34;1m"
 BOLDPURPLE="\033[35;1m"
 
-name="Zahir Sher"
-icNo="111111-11-1111"
-to="08-2000"
-from="01-2000"
+#name="Zahir Sher"
+#icNo="111111-11-1111"
+#to="08-2000"
+#from="01-2000"
 
-#name="$1"
-#icNo="$2"
-#to="$3"
-#from="$4"
+name="$1"
+icNo="$2"
+to="$3"
+from="$4"
 
 REGEX_KPI="^(KPI_[0-9]{2})|(q|Q)$"
 REGEX_RATE="^(([0-9]|10)|(q|Q))$"
@@ -67,6 +67,10 @@ kpiModified=0
 printf "%s\n" "+————————————————————————————————————————————————+"
 printf "%s ${BOLD}%s${NC} %s\n" "|" "       Employee Performance Review Form       " "|"
 printf "%s\n" "+————————————————————————————————————————————————+"
+printf "|  ${BOLD}%-29s ${BLUE}%13s${NC}  |\n" "IC. Number" "$icNo"
+printf "|  ${BOLD}%-30s ${BLUE}%13s${NC}  |\n" "Name" "$name"
+printf "|  ${BOLD}%-25s ${BLUE}%18s${NC}  |\n" "Period" "$from to $to"
+printf "%s\n" "+————————————————————————————————————————————————+"
 
 inCounter=0
 inAvgScore=0
@@ -86,8 +90,6 @@ done
 
 while
 while
-
-#Maybe the ability to modify the entered KPI Code.
 
 echo; echo "Please enter the KPI Code:-"
 echo -en "(${GREEN}KPI_XX${NC}): "
@@ -129,7 +131,7 @@ if [ $kpiFound -eq 0 -a $kpiDuplicated -eq 0 ]; then
 	echo; echo -e "${BLUE}$inKpiCode${RED} does not exist. Enter (${YELLOW}q${RED}) to quit.${NC}"
 elif [[ $kpiDuplicated -eq 1 ]]; then
     
-        printf "\n${BLUE}$inKpiCode${RED} has already been selected.${NC}\n\n" #Please select another KPI criteria.${NC}\n"
+        printf "\n${BLUE}$inKpiCode${RED} has already been selected.${NC}\n\n"
         printf "${UNDERLINE}Would you like to${NC}:-\n"
         echo -e "(${GREEN}m${NC}) - Modify KPI Rate"
         echo -e "(${RED}d${NC}) - Delete KPI Rate"
