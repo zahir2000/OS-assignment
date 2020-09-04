@@ -62,6 +62,7 @@ getStaffPerformance() {
 while
 
 kpiDeleted=0
+kpiModified=0
 
 printf "%s\n" "+————————————————————————————————————————————————+"
 printf "%s ${BOLD}%s${NC} %s\n" "|" "       Employee Performance Review Form       " "|"
@@ -138,7 +139,69 @@ elif [[ $kpiDuplicated -eq 1 ]]; then
     while
         case "$choice" in
             m)
-            ;;
+                mod=0
+                while [ $mod -lt ${#kpiCode[@]} ]; do
+                    if [[ "$inKpiCode" == ${kpiCode[$mod]} ]]; then
+                        modOrigRate=${perfRate[$mod]}
+                        break
+                    fi
+                    mod=$(( $mod+1 ))
+                done
+
+                while
+                while
+
+                    printf "\n\nPlease enter the ${BOLDGREEN}new${NC} Rate obtained (${ITALIC}min 0 - max 10${NC}): "
+                    read modRate
+
+                    if [[ !($modRate =~ $REGEX_RATE) ]]; then
+                        printf "\n${RED}Rate must be between ${BLUE}0 - 10${RED}. Enter (${YELLOW}q${RED}) to quit.${NC}";
+                    fi
+
+                    if [ "$modRate" == "q" ]; then
+                        isAddMore=0
+                        ./EmpValidationForm.sh
+                    fi
+
+                [[ !($modRate =~ $REGEX_RATE) ]]
+
+                do :
+                done
+
+                if [[ $modOrigRate -eq $modRate ]]; then
+                    printf "\n${RED}The ${BOLDGREEN}new${RED} rate cannot be same as original rate. Please re-enter.${NC}"
+                fi  
+
+                [[ $modOrigRate -eq $modRate ]]
+
+                do :
+                done
+
+                echo; echo -n "Comments (if any): "; read modComments;
+
+                printf "\nAre you sure you want to modify the rate from ${RED}$modOrigRate${NC} to ${GREEN}$modRate${NC}"
+                
+                while
+                    printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+                    read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+
+                    if [[ "$choice" == "y" ]]; then
+                        perfRate[$mod]="$modRate"
+                        
+                        if [ -n "$modComments" ]; then
+                            perfComment[$mod]="$modComments"
+                        fi
+
+                        kpiModified=1
+                        printf "\n\n${BOLDGREEN}KPI Rate successfuly modified.${NC}\n"
+                    elif [[ "$choice" == "n" ]]; then
+                        echo
+                    fi
+
+                [[ "$choice" != "y" && "$choice" != "n" ]]
+                do :
+                done
+                ;;
             d)
                 del=0
                 while [ $del -lt ${#kpiCode[@]} ]; do
@@ -150,18 +213,27 @@ elif [[ $kpiDuplicated -eq 1 ]]; then
                     del=$(( $del+1 ))
                 done
                 printf "\n\n${UNDERLINE}Are you sure you want to delete${NC}:\n=> ${BOLDBLUE}$inKpiCode${NC} (${BLUE}$delCriteria${NC}) with rate of ${BOLDPURPLE}$delRate${NC}"
-                printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "; read -n1 choice;
+                
+                while
+                    printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+                    read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
 
-                if [[ "$choice" == "y" ]]; then
-                    kpiCode=(${kpiCode[@]:0:$del} ${kpiCode[@]:$(($del + 1))})
-                    kpiCriteria=(${kpiCriteria[@]:0:$del} ${kpiCriteria[@]:$(($del + 1))})
-                    perfComment=(${perfComment[@]:0:$del} ${perfComment[@]:$(($del + 1))})
-                    perfRate=(${perfRate[@]:0:$del} ${perfRate[@]:$(($del + 1))})
-                    kpiCounter=$(( $kpiCounter - 1 ))
-                    kpiDeleted=1
+                    if [[ "$choice" == "y" ]]; then
+                        kpiCode=(${kpiCode[@]:0:$del} ${kpiCode[@]:$(($del + 1))})
+                        kpiCriteria=(${kpiCriteria[@]:0:$del} ${kpiCriteria[@]:$(($del + 1))})
+                        perfComment=(${perfComment[@]:0:$del} ${perfComment[@]:$(($del + 1))})
+                        perfRate=(${perfRate[@]:0:$del} ${perfRate[@]:$(($del + 1))})
+                        kpiCounter=$(( $kpiCounter - 1 ))
+                        kpiDeleted=1
 
-                    printf "\n\n${BOLDGREEN}KPI successfuly deleted.${NC}\n"
-                fi
+                        printf "\n\n${BOLDGREEN}KPI successfuly deleted.${NC}\n"
+                    elif [[ "$choice" == "n" ]]; then
+                        echo
+                    fi
+
+                [[ "$choice" != "y" && "$choice" != "n" ]]
+                do :
+                done
                 ;;
             r)
                 echo
@@ -176,7 +248,7 @@ elif [[ $kpiDuplicated -eq 1 ]]; then
     done
 fi
 
-if [[ $kpiDeleted -eq 1 ]]; then
+if [[ $kpiDeleted -eq 1 || $kpiModified -eq 1 ]]; then
     break
 fi
 
@@ -184,7 +256,7 @@ fi
 do :
 done
 
-if [[ $kpiDeleted -eq 0 ]]; then
+if [[ $kpiDeleted -eq 0 && $kpiModified -eq 0 ]]; then
 
     echo; echo -e "KPI - Key Performance Indicator: ${BLUE}${kpiCriteria[$kpiCounter]}${NC}"
 
@@ -199,7 +271,8 @@ if [[ $kpiDeleted -eq 0 ]]; then
 
     if [ "$rate" == "q" ]; then
         #Return to Menu
-        exit 1;
+        isAddMore=0
+        ./EmpValidationForm.sh
     fi
 
     [[ !($rate =~ $REGEX_RATE) ]]
