@@ -9,18 +9,18 @@ YELLOW="\033[0;33m"
 NC="\033[0m"
 ITALIC="\033[3m"
 
-name="Zahir Sher"
-icNo="111111-11-1111"
-to="08-2000"
-from="01-2000"
+#name="Zahir Sher"
+#icNo="111111-11-1111"
+#to="08-2000"
+#from="01-2000"
 
-#name="$1"
-#icNo="$2"
-#to="$3"
-#from="$4"
+name="$1"
+icNo="$2"
+to="$3"
+from="$4"
 
-REGEX_KPI="^(KPI_[0-9]{2})|(q)$"
-REGEX_RATE="^(([0-9]|10)|(q))$"
+REGEX_KPI="^(KPI_[0-9]{2})|(q|Q)$"
+REGEX_RATE="^(([0-9]|10)|(q|Q))$"
 REGEX_RESPONSE="^(y|b)$"
 
 kpiFile="KPI.txt"
@@ -81,6 +81,7 @@ while
 
 echo; echo -n "Please enter the KPI Code: "
 read inKpiCode
+inKpiCode=$(echo "$inKpiCode" | tr 'a-z' 'A-Z')
 
 if [[ !($inKpiCode =~ $REGEX_KPI) ]]; then
 	echo; printf "${RED}Incorrect KPI Code entered.${NC}\nPlease follow (${GREEN}KPI_XX${NC}) format\n"
@@ -90,9 +91,9 @@ fi
 do :
 done
 
-if [ "$inKpiCode" == "q" ]; then
-	#Return to Menu
-	exit 1;
+if [ "$inKpiCode" == "Q" ]; then
+	./EmpValidationForm.sh
+	exit 0;
 fi
 
 kpiFound=0; kpiDuplicated=0

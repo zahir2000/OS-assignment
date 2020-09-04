@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REGEX_IC="^([0-9]{6}-[0-9]{2}-[0-9]{4})|(q)$"
-REGEX_PERIOD="^((0[1-9])|(1[0-2]))-[0-9]{4}$"
+REGEX_PERIOD="^(((0[1-9])|(1[0-2]))-[0-9]{4})|(q)$"
 REGEX_RESPONSE="^(n|q)$"
 
 RED="\033[0;31m"
@@ -25,11 +25,27 @@ getDepartment() {
 	echo $1 | cut -d ":" -f 1
 }
 
+checkDate() {
+    toMon=$( echo "$1" | cut -d'-' -f 1 )
+    fromMon=$( echo "$2" | cut -d'-' -f 1 )
+
+    toYear=$( echo "$1" | cut -d'-' -f 2 )
+    fromYear=$( echo "$2" | cut -d'-' -f 2 )
+
+    if [ $toYear -gt $fromYear ]; then
+        echo 1
+    elif [ $toYear -ge $fromYear -a $toMon -gt $fromMon ]; then
+        echo 1
+    else
+        echo 0
+    fi
+}
+
 clear
-echo "========================"
-echo "Employee Validation Form"
-echo "========================"
-echo;
+
+printf "%s\n" "+————————————————————————————————————————————————+"
+printf "%s\n" "|            Employee Validation Form            |"
+printf "%s\n\n" "+————————————————————————————————————————————————+"
 
 while
 echo "Please Enter The Review Period:-"
@@ -50,6 +66,11 @@ while [[ !($from =~ $REGEX_PERIOD) ]]; do
 	fi
 done
 
+if [[ $from == 'q' ]]; then
+    #Return to menu
+    exit 0;
+fi
+
 echo -n "TO   (mm-yyyy): " 
 read to;
 
@@ -67,22 +88,28 @@ while [[ !($to =~ $REGEX_PERIOD) ]]; do
 	fi
 done
 
-if [[ "$to" < "$from" ]]; then
+if [[ $to == 'q' ]]; then
+    #Return to menu
+    exit 0;
+fi
+
+if [[ $(checkDate "$to" "$from") == 0 ]]; then
 	echo; echo -e "${RED}TO ($to) date must be after the FROM ($from) date${NC}"; echo;
 fi
 
-[[ "$to" < "$from" ]]
+[[ $(checkDate "$to" "$from") == 0 ]]
 do :
 done
 
 echo;
 
 while
-while
 
 echo "Please Enter the Employee's IC. Number:-"
 echo -n "(xxxxxx-xx-xxxx): "
 read icNo;
+
+while
 
 	#If IC is not in correct format
 	if [[ !($icNo =~ $REGEX_IC) ]]; then
@@ -102,7 +129,7 @@ read icNo;
 	
 	#Loop while IC format is not correct
 	[[ !($icNo =~ $REGEX_IC) ]]
-	do :
+do :
 done
 
 employeeFound=0
