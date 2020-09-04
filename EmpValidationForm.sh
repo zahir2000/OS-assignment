@@ -148,17 +148,17 @@ if [[ employeeFound -eq 1 ]]; then
 
 	echo; echo;
 
-	if [[ $response == 'q' ]]; then
-		#Return to Menu
-		exit 0;
-	fi
-
-
-	if [[ $response == 'n' ]]; then
-		export name; export icNo; export to; export from;
-		./PerformanceReviewForm.sh
-	fi
-
+    case "$response" in
+    [qQ])
+        #return to menu
+        exit 0
+        ;;
+    [nN])
+        ./PerformanceReviewForm.sh "$name" $icNo $to $from
+        ;;
+    *)
+        echo "Invalid Choice!"
+    esac
 fi
 
 if [[ employeeFound -eq 0 ]]; then
