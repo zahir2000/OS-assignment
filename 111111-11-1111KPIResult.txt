@@ -1,5 +1,5 @@
-Employee Performance Review
-===========================
+                       Employee Performance Review
+                     ===============================
 
 Employee IC. Number    : 111111-11-1111
 Employee Name          : Zahir Sher
@@ -8,8 +8,8 @@ Review Period          : From 01-2000 To 08-2000
 ==============================================================================
 KPI Criteria:				Rate Obtained:				Comments:	
 ==============================================================================
-Knowledge of Work                10                     -                     
+Knowledge of Work                4                      -                     
 
-Average Performance Rating Score: 10
+Average Performance Rating Score: 4
 
-Overall staff performance: Outstanding
+Overall staff performance: Satisfactory

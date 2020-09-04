@@ -154,6 +154,8 @@ if [[ employeeFound -eq 1 ]]; then
         exit 0
         ;;
     [nN])
+        #Check if the period already exists(matches), then ask to override or return.
+        #check if there is a match with the year (both years)
         ./PerformanceReviewForm.sh "$name" $icNo $to $from
         ;;
     *)

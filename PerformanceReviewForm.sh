@@ -34,7 +34,7 @@ kpiCriteria=()
 perfComment=()
 perfRate=()
 
-staffPerformance() {
+getStaffPerformance() {
     score=$(( $1 ))
 
     if [[ $score -le 2 && $score -ge 0 ]]; then
@@ -52,15 +52,33 @@ staffPerformance() {
     fi
 }
 
-#TODO: Check if the KPI has already been selected previously.
+while
 
-echo "================================"
-echo "Employee Performance Review Form"
-echo "================================"
+printf "%s\n" "+————————————————————————————————————————————————+"
+printf "%s\n" "|        Employee Performance Review Form        |"
+printf "%s\n" "+————————————————————————————————————————————————+"
+
+inCounter=0
+inAvgScore=0
+while [[ $inCounter -lt ${#kpiCriteria[@]} ]]; do
+    printf "|  %-38s %5s  |\n" "${kpiCriteria[$inCounter]}" "${perfRate[$inCounter]}"
+    inAvgScore=$(( $inAvgScore+${perfRate[$inCounter]} ))
+    inCounter=$(( $inCounter+1 ))
+
+    if [[ $inCounter -eq ${#kpiCriteria[@]} ]]; then
+        inAvgScore=$(( $inAvgScore / ${#perfRate[@]} ))
+        printf "%s\n" "+================================================+"
+        printf "|  %-38s %5s  |\n" "Average Rating Score" "$inAvgScore"
+        printf "|  %-26s %17s  |\n" "Perforamance" "$(getStaffPerformance $inAvgScore)"
+        printf "%s\n" "+————————————————————————————————————————————————+"
+    fi
+done
 
 while
 while
-while
+
+#Maybe the ability to modify the entered KPI Code.
+
 echo; echo -n "Please enter the KPI Code: "
 read inKpiCode
 
@@ -77,25 +95,31 @@ if [ "$inKpiCode" == "q" ]; then
 	exit 1;
 fi
 
-kpiFound=0
+kpiFound=0; kpiDuplicated=0
 
-if [ -f "$kpiFile" -a -r "$kpiFile" ]; then
+for item in "${kpiCode[@]}"; do
+    if [[ "$inKpiCode" == "$item" ]]; then
+        kpiDuplicated=1
+    fi
+done
+
+if [ -f "$kpiFile" -a -r "$kpiFile" -a $kpiDuplicated -eq 0 ]; then
 while IFS=':' read -r code criteria desc; do
-	#for i in "${ADDR[0]}"; do
-		if [ "$inKpiCode" == "${code//[[:blank:]]/}" ]; then
-            kpiCode+=("$inKpiCode")
-			kpiCriteria+=("$(echo -e "${criteria}" | sed -e 's/^[[:space:]]*//')")
-			kpiFound=1
-		fi
-	#done;
+	if [ "$inKpiCode" == "${code//[[:blank:]]/}" ]; then
+        kpiCode+=("$inKpiCode")
+		kpiCriteria+=("$(echo -e "${criteria}" | sed -e 's/^[[:space:]]*//')")
+		kpiFound=1
+	fi
 done < "$kpiFile"
 fi
 
-if [[ kpiFound -eq 0 ]]; then
+if [ $kpiFound -eq 0 -a $kpiDuplicated -eq 0 ]; then
 	echo; echo -e "${BLUE}$inKpiCode${RED} does not exist. Enter (${YELLOW}q${RED}) to quit.${NC}"
+elif [[ $kpiDuplicated -eq 1 ]]; then
+    printf "\n${BLUE}$inKpiCode${RED} has already been selected. Please select another KPI criteria.${NC}\n"
 fi
 
-[[ kpiFound -eq 0 ]]
+[[ $kpiFound -eq 0 || $kpiDuplicated -eq 1 ]]
 do :
 done
 
@@ -144,10 +168,9 @@ done
 
 #Check if response is Y or B
 
-if [ $isFirstTime -eq 1 ] && [ -n "$name" ] && [ -n "$icNo" ] && [ -n "$to" ] && [ -n "$from" ]; then
+if [ $isFirstTime -eq 1 -a -n "$name" -a -n "$icNo" -a -n "$to" -a -n "$from" ]; then
     ( 
-        printf "Employee Performance Review\n"
-        echo "===========================" 
+        printf "%50s\n%52s\n" "Employee Performance Review" "==============================="
         printf "\nEmployee IC. Number    : $icNo\n"
         printf "Employee Name          : $name\n"
         printf "Review Period          : From $from To $to\n\n"
@@ -170,14 +193,11 @@ echo "$(head -n 10 ${icNo}KPIResult.txt)" > "${icNo}KPIResult.txt"
 
     avgRatingScore=$(( $avgRatingScore / ${#perfRate[@]} ))
     echo; echo "Average Performance Rating Score: $avgRatingScore"
-    perfAdj=$(staffPerformance $avgRatingScore)
+    perfAdj=$(getStaffPerformance $avgRatingScore)
     echo; echo "Overall staff performance: $perfAdj"
 ) >> "${icNo}KPIResult.txt"
 
 clear
-echo "================================"
-echo "Employee Performance Review Form"
-echo "================================"
 kpiCounter=$(( $kpiCounter + 1 ))
 
 if [[ $response == 'b' ]]; then
