@@ -4,6 +4,8 @@ REGEX_IC="^([0-9]{6}-[0-9]{2}-[0-9]{4})|(q)$"
 REGEX_PERIOD="^(((0[1-9])|(1[0-2]))-[12][0-9]{3})|(q)$"
 REGEX_RESPONSE="^((n|N)|(q|Q))$"
 
+chmod u+x "PerformanceReviewForm.sh"
+
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
