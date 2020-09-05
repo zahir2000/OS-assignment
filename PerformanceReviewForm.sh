@@ -3,6 +3,8 @@
 clear
 
 RED="\033[0;31m"
+LIGHTRED="\033[0;91m"
+LIGHTYELLOW="\033[0;93m"
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 PURPLE="\033[0;35m"
@@ -28,7 +30,7 @@ from="$4"
 REGEX_KPI="^(KPI_[0-9]{2})|(q|Q)$"
 REGEX_RATE="^(([0-9]|10)|(q|Q))$"
 REGEX_RESPONSE="^(y|b)$"
-REGEX_RESPONSE="^(m)|(d)|(r)$"
+REGEX_CHOICE="^(m)|(d)|(r)$"
 
 kpiFile="KPI.txt"
 kpiCounter=0
@@ -136,10 +138,10 @@ elif [[ $kpiDuplicated -eq 1 ]]; then
         echo -e "(${GREEN}m${NC}) - Modify KPI Rate"
         echo -e "(${RED}d${NC}) - Delete KPI Rate"
         echo -e "(${YELLOW}r${NC}) - Select New KPI"
-        echo -n "Please select a choice: "; read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+        echo -n "Please select a choice: "; read -n1 dupChoice; dupChoice=$(echo "$dupChoice" | tr 'A-Z' 'a-z')
 
     while
-        case "$choice" in
+        case "$dupChoice" in
             m)
                 mod=0
                 while [ $mod -lt ${#kpiCode[@]} ]; do
@@ -245,7 +247,7 @@ elif [[ $kpiDuplicated -eq 1 ]]; then
                 echo -n "Please select a choice: "; read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
         esac
 
-    [[ !($choice =~ $REGEX_CHOICE) ]]
+    [[ !($dupChoice =~ $REGEX_CHOICE) ]]
     do :
     done
 fi
@@ -340,15 +342,51 @@ if [[ $kpiDeleted -eq 0 && $kpiModified -eq 0 ]]; then
     kpiCounter=$(( $kpiCounter + 1 ))
 fi
 
-clear
-
 if [[ $response == 'b' ]]; then
     isAddMore=0
 
-    #Would you like to see the created Employee Performance Review?
-    ./EmpValidationForm.sh
+    printf "\n\n${LIGHTYELLOW}Would you like to see the created Employee Performance Review?${NC}"
+
+    while
+        printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+        read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+        
+        if [[ "$choice" == "y" ]]; then
+            clear
+            printf "\n%50s\n%52s\n" "Employee Performance Review" "==============================="
+            printf "\nEmployee IC. Number    : $icNo\n"
+            printf "Employee Name          : $name\n"
+            printf "Review Period          : From $from To $to\n\n"
+            printf "==============================================================================\n"
+            printf "%-26s %-28s %-22s\n" "KPI Criteria:" "Rate Obtained:" "Comments:"
+            printf "==============================================================================\n"
+
+            i=0; avgRatingScore=0
+            while [ $i -lt ${#kpiCriteria[@]} ]; do
+                printf "%-32s %-22s %-22s\n" "${kpiCriteria[$i]}" "${perfRate[$i]}" "${perfComment[$i]}"
+                avgRatingScore=$(( $avgRatingScore+${perfRate[$i]} ))
+                i=$(( $i+1 ))
+            done
+
+            avgRatingScore=$(( $avgRatingScore / ${#perfRate[@]} ))
+            echo; echo "Average Performance Rating Score: $avgRatingScore"
+            perfAdj=$(getStaffPerformance $avgRatingScore)
+            echo; echo "Overall staff performance: $perfAdj"; echo; echo
+
+            printf "${LIGHTYELLOW}Press any key to continue ${NC}"
+            read -n 1 -s -r -p ""
+
+            ./EmpValidationForm.sh
+        elif [[ "$choice" == "n" ]]; then
+            ./EmpValidationForm.sh
+        fi
+
+    [[ "$choice" != "y" && "$choice" != "n" ]]
+    do :
+    done
 fi
-    #If inserted anything to file, sleep for a while and show echo then return back.
+    
+clear
 
 [[ isAddMore -eq 1 ]]
 do : 
