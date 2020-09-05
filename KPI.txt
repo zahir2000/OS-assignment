@@ -2,3 +2,4 @@ KPI_01: Knowledge of Work: Knowledge of products, techniques, skills and procedu
 KPI_02: Initiative: The ability to plan work and to go ahead with a task without being told every detail
 KPI_03: Cooperation: Willingness to work harmoniously with others in getting a job done.
 KPI_04: Attendance: Faithfulness in coming to work daily and conforming to scheduled work hours.
+KPI_05:Ethics:Performs jobs based on best morality practices.

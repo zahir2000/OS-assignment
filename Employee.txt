@@ -1,3 +1,11 @@
 AF:790909-13-1234:Tan Mei Lee:012-12345678:tanml@bacs.my:Female:09-09-1979:Accountant:05-12-1998
 IT: 810808-06-1233:Chun Wai Kit:012-2034521: chunwk@bacs.my:Male:08-08-1981:Administator:03-10-1999
 SM:800909-14-5051:Tan Lee Wah:017-3310668: tanlw@bacs.my:Male:09-09-1980:Sales Advisor:09-09-2003
+PD:990115-10-7859:Tan Jun Chuan/@:019-2893023:janksion@gmail.com:Male:15-01-1999:Sales Man:05-09-2020
+PD:001025-10-9999:Jason:012-3124567:jason@live.com.my:Male:25-10-2000:Accountant:25-05-2020
+PD:001026-10-9999:John:012-12345678:john@hotmail.com:Male:26-10-2000:Sales:15-02-2003
+PD:001027-10-9999:Tan JC:012-12345678:Tan@live.com.my:Male:27-10-2000:Account:15-12-2003
+PD:001028-10-9990:Mei Lin:012-12345678:meil@bacs2093.my:Female:28-10-2000:Acco:15-02-2003
+PD:001029-10-9990:Mei Mei:012-1234567:MeiMei@hotmail.com:Female:29-10-2000:Accountant:15-02-2003
+PD:001030-10-9999:John Cena:012-12345678:JohnC@live.com:Male:30-10-2000:Sales:15-02-2003
+PD:000124-11-1111:Zahiriddin Rustamov:010-8003610:zakisher@gmail.com:Male:24-01-2000:Sales:01-01-2020

@@ -75,7 +75,7 @@ while [[ !($from =~ $REGEX_PERIOD) ]]; do
 done
 
 if [[ $from == 'q' ]]; then
-    #Return to menu
+    ./Task1_Menu.sh
     exit 0;
 fi
 
@@ -93,7 +93,7 @@ while [[ !($to =~ $REGEX_PERIOD) ]]; do
 done
 
 if [[ $to == 'q' ]]; then
-    #Return to menu
+    ./Task1_Menu.sh
     exit 0;
 fi
 
@@ -127,8 +127,7 @@ while
 	
 	#If user quit
 	if [ $icNo == 'q' ]; then
-		#Return to Menu
-		exit 1;
+		./Task1_Menu.sh
 	fi
 	
 	#Loop while IC format is not correct
@@ -174,14 +173,11 @@ if [[ employeeFound -eq 1 ]]; then
 
     case "$response" in
     [qQ])
-        #return to menu
-        exit 0
+        ./Task1_Menu.sh
         ;;
     [nN])
         #Check if the period already exists(matches), then ask to override or return.
-        #check if there is a match with the year (both years)
 		#A check to see if the entered period falls within existing files...?
-		#Retrieve ev
 
 		if [[ -d "${icNo}KPIResult" && -r "${icNo}KPIResult" ]]; then
 			#File Exists
@@ -226,21 +222,25 @@ if [[ employeeFound -eq 1 ]]; then
 					fi
 				done
 
-				printf "\n${UNDERLINE}Would you like to continue to the Employee Performance Review Form?${NC}"
+				if [ $clashedFiles -gt 1 ]; then
+					printf "\n${UNDERLINE}Would you like to continue to the Employee Performance Review Form?${NC}"
 
-				while
-                    printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
-                    read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+					while
+						printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+						read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
 
-                    if [[ "$choice" == "y" ]]; then
-						./PerformanceReviewForm.sh "$name" $icNo $to $from
-                    elif [[ "$choice" == "n" ]]; then
-                        ./EmpValidationForm.sh
-                    fi
+						if [[ "$choice" == "y" ]]; then
+							./PerformanceReviewForm.sh "$name" $icNo $to $from
+						elif [[ "$choice" == "n" ]]; then
+							./EmpValidationForm.sh
+						fi
 
-                [[ "$choice" != "y" && "$choice" != "n" ]]
-                do :
-                done
+					[[ "$choice" != "y" && "$choice" != "n" ]]
+					do :
+					done
+				else
+					./PerformanceReviewForm.sh "$name" $icNo $to $from
+				fi
 				
 				#./PerformanceReviewForm.sh "$name" $icNo $to $from
 			fi

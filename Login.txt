@@ -1,0 +1,6 @@
+kellywong@bacs2093.my:Bacs2093:HR:Manager
+simontan@ bacs2093.my:Bacs2093:SM:Manager
+lilylee@bacs2093.my:Bacs2093:PD:Manager
+nelsonchong@bacs2093.my:Bacs2093:PU:Manager
+samueltee@bacs2093.my:Bacs2093:IT:Manager
+tanjunchuan@bacs2093.my:abc123:IT:Developer

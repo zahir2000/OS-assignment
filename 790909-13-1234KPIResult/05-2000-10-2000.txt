@@ -1,0 +1,15 @@
+                       Employee Performance Review
+                     ===============================
+
+Employee IC. Number    : 790909-13-1234
+Employee Name          : Tan Mei Lee
+Review Period          : From 05-2000 To 10-2000
+
+==============================================================================
+KPI Criteria:              Rate Obtained:               Comments:             
+==============================================================================
+Knowledge of Work                5                      -                     
+
+Average Performance Rating Score: 5
+
+Overall staff performance: Satisfactory

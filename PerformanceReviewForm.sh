@@ -68,7 +68,7 @@ printf "%s\n" "+—————————————————————�
 printf "%s ${BOLD}%s${NC} %s\n" "|" "       Employee Performance Review Form       " "|"
 printf "%s\n" "+————————————————————————————————————————————————+"
 printf "|  ${BOLD}%-29s ${BLUE}%13s${NC}  |\n" "IC. Number" "$icNo"
-printf "|  ${BOLD}%-30s ${BLUE}%13s${NC}  |\n" "Name" "$name"
+printf "|  ${BOLD}%-13s ${BLUE}%30s${NC}  |\n" "Name" "$name"
 printf "|  ${BOLD}%-25s ${BLUE}%18s${NC}  |\n" "Period" "$from to $to"
 printf "%s\n" "+————————————————————————————————————————————————+"
 
@@ -344,6 +344,8 @@ clear
 
 if [[ $response == 'b' ]]; then
     isAddMore=0
+
+    #Would you like to see the created Employee Performance Review?
     ./EmpValidationForm.sh
 fi
     #If inserted anything to file, sleep for a while and show echo then return back.
