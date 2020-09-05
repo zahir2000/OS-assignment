@@ -317,11 +317,11 @@ if [ $isFirstTime -eq 1 -a -n "$name" -a -n "$icNo" -a -n "$to" -a -n "$from" ];
         printf "==============================================================================\n"
         printf "%-26s %-28s %-22s\n" "KPI Criteria:" "Rate Obtained:" "Comments:"
         printf "==============================================================================\n"
-    ) > "${icNo}KPIResult.txt"
+    ) > "${icNo}KPIResult/$from-$to.txt"
     isFirstTime=0
 fi
     
-echo "$(head -n 10 ${icNo}KPIResult.txt)" > "${icNo}KPIResult.txt"
+echo "$(head -n 10 ${icNo}KPIResult/$from-$to.txt)" > "${icNo}KPIResult/$from-$to.txt"
 (
     i=0; avgRatingScore=0
     while [ $i -lt ${#kpiCriteria[@]} ]; do
@@ -334,10 +334,13 @@ echo "$(head -n 10 ${icNo}KPIResult.txt)" > "${icNo}KPIResult.txt"
     echo; echo "Average Performance Rating Score: $avgRatingScore"
     perfAdj=$(getStaffPerformance $avgRatingScore)
     echo; echo "Overall staff performance: $perfAdj"
-) >> "${icNo}KPIResult.txt"
+) >> "${icNo}KPIResult/$from-$to.txt"
+
+if [[ $kpiDeleted -eq 0 && $kpiModified -eq 0 ]]; then
+    kpiCounter=$(( $kpiCounter + 1 ))
+fi
 
 clear
-kpiCounter=$(( $kpiCounter + 1 ))
 
 if [[ $response == 'b' ]]; then
     isAddMore=0

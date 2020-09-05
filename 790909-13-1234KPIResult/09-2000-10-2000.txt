@@ -1,14 +1,14 @@
                        Employee Performance Review
                      ===============================
 
-Employee IC. Number    : 810808-06-1233
-Employee Name          : Chun Wai Kit
-Review Period          : From 08-2000 To 09-2000
+Employee IC. Number    : 790909-13-1234
+Employee Name          : Tan Mei Lee
+Review Period          : From 09-2000 To 10-2000
 
 ==============================================================================
-KPI Criteria:				Rate Obtained:				Comments:	
+KPI Criteria:              Rate Obtained:               Comments:             
 ==============================================================================
-Initiative                       10                     Outstanding initiative.
+Attendance                       10                     -                     
 
 Average Performance Rating Score: 10
 
