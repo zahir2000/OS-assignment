@@ -43,8 +43,7 @@ if [[ $employeeFound -eq 1 ]]; then
             read deleteFile; deleteFile=$(echo "$deleteFile" | tr 'A-Z' 'a-z')
 
             if [[ $deleteFile == 'q' ]]; then
-                ./PerformanceReviewMenu.sh
-                exit 0
+                ./PerformanceReviewMenu.sh; exit 0
             fi
 
             if [[ $deleteFile -lt 1 || $deleteFile -gt $resultCounter ]]; then
@@ -82,8 +81,7 @@ if [[ $employeeFound -eq 1 ]]; then
             read -n1 anotherFile; anotherFile=$(echo "$anotherFile" | tr 'A-Z' 'a-z')
 
             if [[ "$anotherFile" == "n" ]]; then
-                ./PerformanceReviewMenu.sh
-                exit 0
+                ./PerformanceReviewMenu.sh; exit 0
             elif [[ "$anotherFile" == "y" ]]; then
                 clear
                 printf "%s\n" "+————————————————————————————————————————————————+"
@@ -104,8 +102,7 @@ if [[ $employeeFound -eq 1 ]]; then
             read -n1 searchAgain; searchAgain=$(echo "$searchAgain" | tr 'A-Z' 'a-z')
 
             if [[ "$searchAgain" == "n" ]]; then
-                ./PerformanceReviewMenu.sh
-                exit 0
+                ./PerformanceReviewMenu.sh; exit 0
             elif [[ "$searchAgain" == "y" ]]; then
                 employeeFound=0
                 clear
