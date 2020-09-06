@@ -25,13 +25,14 @@ if [[ $employeeFound -eq 1 ]]; then
     resultCounter=0; files=()
     if [[ -d "${icNo}KPIResult" && -r "${icNo}KPIResult" ]]; then
         filesCount=$(( $( ls -l "${icNo}KPIResult/" | wc -l ) - 1 ))
-        #ls "${icNo}KPIResult/" | sort -k1.4,1.7 
+        
         for entry in "${icNo}KPIResult"/*
         do
             file=$( echo ${entry} | cut -d "/" -f 2 | cut -d "." -f 1 )
             files+=("$file")
             resultCounter=$(( $resultCounter + 1 ))
-            printf "${BOLD}%3s${NC} %-20s\n" "$resultCounter." "$file"
+            fileOutput=$( echo $file | sed s/./" to "/8 )
+            printf "${BOLD}%3s${NC} %-20s\n" "$resultCounter." "$fileOutput"
         done
     fi
  
@@ -57,7 +58,8 @@ if [[ $employeeFound -eq 1 ]]; then
         deleteFile=$(( $deleteFile - 1 ))
         resultFile="${icNo}KPIResult/${files[$deleteFile]}.txt"
 
-        printf "\nAre you sure you want to delete ${RED}${files[$deleteFile]}${NC}?"
+        fileOutput=$( echo ${files[$deleteFile]} | sed s/./" to "/8 )
+        printf "\nAre you sure you want to delete ${RED}$fileOutput${NC}?"
 
         while
             printf "\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
@@ -65,6 +67,7 @@ if [[ $employeeFound -eq 1 ]]; then
 
             if [[ "$confirmChoice" == "y" ]]; then
                 rm -f $resultFile
+                printf "${GREEN}\n\nFile (${BOLDGREEN}$fileOutput${GREEN}) successfully deleted.${NC}"
             fi
 
         [[ "$confirmChoice" != "y" && "$confirmChoice" != "n" ]]

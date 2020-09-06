@@ -31,7 +31,8 @@ if [[ $employeeFound -eq 1 ]]; then
             file=$( echo ${entry} | cut -d "/" -f 2 | cut -d "." -f 1 )
             files+=("$file")
             resultCounter=$(( $resultCounter + 1 ))
-            printf "${BOLD}%3s${NC} %-20s\n" "$resultCounter." "$file"
+            fileOutput=$( echo $file | sed s/./" to "/8 )
+            printf "${BOLD}%3s${NC} %-20s\n" "$resultCounter." "$fileOutput"
         done
     fi
  
