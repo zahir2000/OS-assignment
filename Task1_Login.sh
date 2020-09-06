@@ -1,5 +1,5 @@
 #!/bin/bash
-
+. ./permissions.sh
 clear
 
 echo "=========================================="
@@ -45,7 +45,6 @@ if [[ "$wrong" = "Correct Login" ]]; then
       echo "You don't have priviledge to access."
       echo
    else
-      chmod u+x "Task1_Menu.sh"
       ./Task1_Menu.sh
       break;
    fi

@@ -1,8 +1,6 @@
 #!/bin/bash
 
 clear
-chmod u+x "Task2_AddNewEmployee.sh"; chmod u+x "Task3_AddNewKPI.sh"
-chmod u+x "EmpValidationForm.sh"; chmod u+x "PerformanceReviewMenu.sh"
 
 echo "=============================="
 echo "Human Resouces Management Menu"

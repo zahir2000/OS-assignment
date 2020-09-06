@@ -31,10 +31,6 @@ REGEX_RATE="^(([0-9]|10)|(q|Q))$"
 REGEX_RESPONSE_PRF="^(y|b)$"
 REGEX_CHOICE="^(m)|(d)|(r)$"
 
-#Permissions
-chmod u+x "PerformanceReviewForm.sh"
-chmod u+x "PerformanceReviewSearch.sh"
-
 #Text Files
 kpiFile="KPI.txt"
 employeeFile="Employee.txt"

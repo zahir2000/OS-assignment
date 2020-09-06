@@ -2,10 +2,6 @@
 clear
 choice=r
 
-chmod u+x "Task2_AddNewEmployeeFormPD.sh"; chmod u+x "Task2_AddNewEmployeeFormPU.sh"
-chmod u+x "Task2_AddNewEmployeeFormSM.sh"; chmod u+x "Task2_AddNewEmployeeFormHR.sh"
-chmod u+x "Task2_AddNewEmployeeFormAF.sh"; chmod u+x "Task2_AddNewEmployeeFormIT.sh"
-
 echo "========================="
 echo "Department Selection Menu"
 echo "========================="
