@@ -28,7 +28,7 @@ if [[ $(echo "${loginArray[$i]}" | cut -d':' -f 1) = "$email" && $(echo "${login
       echo "Login Successful."
       echo
       wrong="Correct Login"
-      postion="Manager"
+      position="Manager"
       break;
    else
       wrong="Correct Login"
@@ -40,7 +40,7 @@ fi
 done
 
 if [[ "$wrong" = "Correct Login" ]]; then
-   if ! [[ "$position" = "Not Manager" ]]; then
+   if  [[ "$position" = "Not Manager" ]]; then
       echo "You don't have priviledge to access."
       echo
    else

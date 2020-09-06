@@ -23,18 +23,20 @@ if ! [[ "$desc" =~ ^[a-zA-Z\,\.\ ]+$ ]]; then
    echo "Description only allow alphabet, comma, full stop, and whitespace."
 fi
 
-yesNo="Not YN"
-while ! [[ "$yesNo" = "Y" || "$yesNo" = "N" ]]; do
-echo -n "Are you sure you want to add this new KPI? (Y)es or (N)o : "
-read yesNo
-if [ "$yesNo" = "Y" ]; then
-   printf '%s:%s:%s\n' $(printf "KPI_%02d" "$((${#kpiArray[@]} + 1))") "$KPICriteria" "$desc" >> KPI.txt
-elif [ "$yesNo" = "N" ]; then
-   break
-else
-   echo "Invalid choice. Please select Y or N."
+if [[ "$desc" =~ ^[a-zA-Z\,\.\ ]+$ && "$KPICriteria" =~ ^[a-zA-Z\ ]+$ ]]; then
+   yesNo="Not YN"
+   while ! [[ "$yesNo" = "Y" || "$yesNo" = "N" ]]; do
+   echo -n "Are you sure you want to add this new KPI? (Y)es or (N)o : "
+   read yesNo
+   if [ "$yesNo" = "Y" ]; then
+      printf '%s:%s:%s\n' $(printf "KPI_%02d" "$((${#kpiArray[@]} + 1))") "$KPICriteria" "$desc" >> KPI.txt
+   elif [ "$yesNo" = "N" ]; then
+      break
+   else
+      echo "Invalid choice. Please select Y or N."
+   fi
+   done
 fi
-done
 
 addKPI="Not YQ"
 while ! [[ "$addKPI" = "Y" || "$addKPI" = "Q" ]]; do
@@ -43,7 +45,7 @@ read addKPI
 if [ "$addKPI" = "Y" ]; then
    addKPI="Y"
 elif [ "$addKPI" = "Q" ]; then
-   break
+   echo; break
 else
    echo "Invalid choice. Please select Y or Q."
 fi
