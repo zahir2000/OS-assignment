@@ -98,23 +98,23 @@ read icNo;
 
 while
 
-	#If IC is not in correct format
-	if [[ !($icNo =~ $REGEX_IC) ]]; then
-		echo
-		echo -e "${RED}Incorrect IC. Number entered.${NC}"
-		echo -e "Please follow (${GREEN}xxxxxx-xx-xxxx${NC}) format. Enter (${RED}q${NC}) to quit."
-		echo
-		echo -en "IC (${GREEN}xxxxxx-xx-xxxx${NC}): "
-		read icNo;
-	fi
-	
-	#If user quit
-	if [ $icNo == 'q' ]; then
-		./PerformanceReviewMenu.sh; exit 0
-	fi
-	
-	#Loop while IC format is not correct
-	[[ !($icNo =~ $REGEX_IC) ]]
+#If IC is not in correct format
+if [[ !($icNo =~ $REGEX_IC) ]]; then
+	echo
+	echo -e "${RED}Incorrect IC. Number entered.${NC}"
+	echo -e "Please follow (${GREEN}xxxxxx-xx-xxxx${NC}) format. Enter (${RED}q${NC}) to quit."
+	echo
+	echo -en "IC (${GREEN}xxxxxx-xx-xxxx${NC}): "
+	read icNo;
+fi
+
+#If user quit
+if [ $icNo == 'q' ]; then
+	./PerformanceReviewMenu.sh; exit 0
+fi
+
+#Loop while IC format is not correct
+[[ !($icNo =~ $REGEX_IC) ]]
 do :
 done
 
@@ -158,79 +158,79 @@ if [[ employeeFound -eq 1 ]]; then
     [qQ])
         ./PerformanceReviewMenu.sh; exit 0;;
     [nN])
-        #Check if the period already exists(matches), then ask to override or return.
-		#A check to see if the entered period falls within existing files...?
+	#Check if the period already exists(matches), then ask to override or return.
+	#Check to see if the entered period falls within existing files
 
-		if [[ -d "${icNo}KPIResult" && -r "${icNo}KPIResult" ]]; then
-			#File Exists
+	if [[ -d "${icNo}KPIResult" && -r "${icNo}KPIResult" ]]; then
+		#File Exists
+		
+		if [[ -f "${icNo}KPIResult/$from-$to.txt" && -r "${icNo}KPIResult/$from-$to.txt" ]]; then
+			echo -e "${BOLDRED}There is a KPI Report with the same period.${NC}"
+			printf "\n${UNDERLINE}Would you like to overwrite it?${NC}"
 			
-			if [[ -f "${icNo}KPIResult/$from-$to.txt" && -r "${icNo}KPIResult/$from-$to.txt" ]]; then
-				echo -e "${BOLDRED}There is a KPI Report with the same period.${NC}"
-				printf "\n${UNDERLINE}Would you like to overwrite it?${NC}"
-				
-				while
-                    printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
-                    read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+			while
+				printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+				read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
 
-                    if [[ "$choice" == "y" ]]; then
-						./PerformanceReviewForm.sh "$name" $icNo $to $from
-                    elif [[ "$choice" == "n" ]]; then
-                        ./EmpValidationForm.sh
-                    fi
-
-                [[ "$choice" != "y" && "$choice" != "n" ]]
-                do :
-                done
-			else
-				origFrom=$( echo $from | cut -d "-" -f 2 )$( echo $from | cut -d "-" -f 1 )
-				origTo=$( echo $to | cut -d "-" -f 2 )$( echo $to | cut -d "-" -f 1 )
-				clashCounter=0; clashedFiles=1
-				
-				for entry in "${icNo}KPIResult"/*
-				do
-					file=$( echo ${entry} | cut -d "/" -f 2 | cut -d "." -f 1 )
-					entryFrom=$( echo $file | cut -d "-" -f 2 )$( echo $file | cut -d "-" -f 1 )
-					entryTo=$( echo $file | cut -d "-" -f 4 )$( echo $file | cut -d "-" -f 3 )
-
-					if [[ $(compareDate $origFrom $origTo $entryFrom) == 1 || $(compareDate $origFrom $origTo $entryTo) == 1 ]]; then
-						if [ $clashCounter -eq 0 ]; then
-							printf "${BOLDYELLOW}Warning${NC}\n"
-							printf "The entered period (${GREEN}$from${NC} to ${GREEN}$to${NC}) clashes with the following employee review periods:\n"
-							clashCounter=1
-						fi
-
-						echo "${clashedFiles}. $( echo $file | cut -d "-" -f 1,2 ) to $( echo $file | cut -d "-" -f 3,4 )"
-						clashedFiles=$(( $clashedFiles + 1 ))
-					fi
-				done
-
-				if [ $clashedFiles -gt 1 ]; then
-					printf "\n${UNDERLINE}Would you like to continue to the Employee Performance Review Form?${NC}"
-
-					while
-						printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
-						read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
-
-						if [[ "$choice" == "y" ]]; then
-							./PerformanceReviewForm.sh "$name" $icNo $to $from
-						elif [[ "$choice" == "n" ]]; then
-							./EmpValidationForm.sh
-						fi
-
-					[[ "$choice" != "y" && "$choice" != "n" ]]
-					do :
-					done
-				else
+				if [[ "$choice" == "y" ]]; then
 					./PerformanceReviewForm.sh "$name" $icNo $to $from
+				elif [[ "$choice" == "n" ]]; then
+					./EmpValidationForm.sh
 				fi
-				
-				#./PerformanceReviewForm.sh "$name" $icNo $to $from
-			fi
+
+			[[ "$choice" != "y" && "$choice" != "n" ]]
+			do :
+			done
 		else
-			mkdir "${icNo}KPIResult"
-			./PerformanceReviewForm.sh "$name" $icNo $to $from
+			origFrom=$( echo $from | cut -d "-" -f 2 )$( echo $from | cut -d "-" -f 1 )
+			origTo=$( echo $to | cut -d "-" -f 2 )$( echo $to | cut -d "-" -f 1 )
+			clashCounter=0; clashedFiles=1
+			
+			for entry in "${icNo}KPIResult"/*
+			do
+				file=$( echo ${entry} | cut -d "/" -f 2 | cut -d "." -f 1 )
+				entryFrom=$( echo $file | cut -d "-" -f 2 )$( echo $file | cut -d "-" -f 1 )
+				entryTo=$( echo $file | cut -d "-" -f 4 )$( echo $file | cut -d "-" -f 3 )
+
+				if [[ $(compareDate $origFrom $origTo $entryFrom) == 1 || $(compareDate $origFrom $origTo $entryTo) == 1 ]]; then
+					if [ $clashCounter -eq 0 ]; then
+						printf "${BOLDYELLOW}Warning${NC}\n"
+						printf "The entered period (${GREEN}$from${NC} to ${GREEN}$to${NC}) clashes with the following employee review periods:\n"
+						clashCounter=1
+					fi
+
+					echo "${clashedFiles}. $( echo $file | cut -d "-" -f 1,2 ) to $( echo $file | cut -d "-" -f 3,4 )"
+					clashedFiles=$(( $clashedFiles + 1 ))
+				fi
+			done
+
+			if [ $clashedFiles -gt 1 ]; then
+				printf "\n${UNDERLINE}Would you like to continue to the Employee Performance Review Form?${NC}"
+
+				while
+					printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+					read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+
+					if [[ "$choice" == "y" ]]; then
+						./PerformanceReviewForm.sh "$name" $icNo $to $from
+					elif [[ "$choice" == "n" ]]; then
+						./EmpValidationForm.sh
+					fi
+
+				[[ "$choice" != "y" && "$choice" != "n" ]]
+				do :
+				done
+			else
+				./PerformanceReviewForm.sh "$name" $icNo $to $from
+			fi
+			
+			#./PerformanceReviewForm.sh "$name" $icNo $to $from
 		fi
-        ;;
+	else
+		mkdir "${icNo}KPIResult"
+		./PerformanceReviewForm.sh "$name" $icNo $to $from
+	fi
+	;;
     *)
         echo "Invalid Choice!"
     esac
