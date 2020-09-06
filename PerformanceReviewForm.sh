@@ -2,20 +2,7 @@
 
 clear
 
-RED="\033[0;31m"
-LIGHTRED="\033[0;91m"
-LIGHTYELLOW="\033[0;93m"
-GREEN="\033[0;32m"
-BLUE="\033[0;34m"
-PURPLE="\033[0;35m"
-YELLOW="\033[0;33m"
-NC="\033[0m"
-ITALIC="\033[3m"
-BOLD="\033[1m"
-UNDERLINE="\033[4m"
-BOLDGREEN="\033[32;1m"
-BOLDBLUE="\033[34;1m"
-BOLDPURPLE="\033[35;1m"
+. ./configs.sh
 
 #name="Zahir Sher"
 #icNo="111111-11-1111"
@@ -27,12 +14,6 @@ icNo="$2"
 to="$3"
 from="$4"
 
-REGEX_KPI="^(KPI_[0-9]{2})|(q|Q)$"
-REGEX_RATE="^(([0-9]|10)|(q|Q))$"
-REGEX_RESPONSE="^(y|b)$"
-REGEX_CHOICE="^(m)|(d)|(r)$"
-
-kpiFile="KPI.txt"
 kpiCounter=0
 
 isFirstTime=1
@@ -107,8 +88,7 @@ do :
 done
 
 if [ "$inKpiCode" == "Q" ]; then
-	./EmpValidationForm.sh
-	exit 0;
+	./EmpValidationForm.sh; exit 0;
 fi
 
 kpiFound=0; kpiDuplicated=0
@@ -164,7 +144,7 @@ elif [[ $kpiDuplicated -eq 1 ]]; then
 
                     if [ "$modRate" == "q" ]; then
                         isAddMore=0
-                        ./EmpValidationForm.sh
+                        ./EmpValidationForm.sh; exit 0
                     fi
 
                 [[ !($modRate =~ $REGEX_RATE) ]]
@@ -276,7 +256,7 @@ if [[ $kpiDeleted -eq 0 && $kpiModified -eq 0 ]]; then
     if [ "$rate" == "q" ]; then
         #Return to Menu
         isAddMore=0
-        ./EmpValidationForm.sh
+        ./EmpValidationForm.sh; exit 0
     fi
 
     [[ !($rate =~ $REGEX_RATE) ]]
@@ -297,13 +277,13 @@ fi
 
 while
 	echo; echo -en "Press (${GREEN}y${NC}) to continue to enter the Employee's marks or (${RED}b${NC}) to return to the previous screen: "
-    read -n 1 response;
+    read -n 1 response; response=$(echo "$response" | tr 'A-Z' 'a-z')
 
-	if [[ !($response =~ $REGEX_RESPONSE)  ]]; then
+	if [[ !($response =~ $REGEX_RESPONSE_PRF)  ]]; then
 		echo;echo; echo -e "Please enter either (${GREEN}y${NC}) or (${RED}b${NC})"
 	fi
 
-	[[ $response != 'y' && $response != 'b' ]]
+	[[ !($response =~ $REGEX_RESPONSE_PRF) ]]
 
 do :
 done
@@ -376,9 +356,9 @@ if [[ $response == 'b' ]]; then
             printf "${LIGHTYELLOW}Press any key to continue ${NC}"
             read -n 1 -s -r -p ""
 
-            ./EmpValidationForm.sh
+            ./EmpValidationForm.sh; exit 0
         elif [[ "$choice" == "n" ]]; then
-            ./EmpValidationForm.sh
+            ./EmpValidationForm.sh; exit 0
         fi
 
     [[ "$choice" != "y" && "$choice" != "n" ]]

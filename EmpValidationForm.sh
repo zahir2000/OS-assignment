@@ -1,24 +1,7 @@
 #!/bin/bash
 
-REGEX_IC="^([0-9]{6}-[0-9]{2}-[0-9]{4})|(q)$"
-REGEX_PERIOD="^(((0[1-9])|(1[0-2]))-[12][0-9]{3})|(q)$"
-REGEX_RESPONSE="^((n|N)|(q|Q))$"
+. ./configs.sh
 
-chmod u+x "PerformanceReviewForm.sh"
-
-RED="\033[0;31m"
-GREEN="\033[0;32m"
-BLUE="\033[0;34m"
-LIGHTBLUE="\033[0;94m"
-YELLOW="\033[0;33m"
-NC="\033[0m"
-BOLD="\033[1m"
-BOLDRED="\033[31;1m"
-BOLDYELLOW="\033[33;1m"
-ITALIC="\033[3m"
-UNDERLINE="\033[4m"
-
-filename="Employee.txt"
 employee=""
 
 getName() {
@@ -77,8 +60,7 @@ while [[ !($from =~ $REGEX_PERIOD) ]]; do
 done
 
 if [[ $from == 'q' ]]; then
-    ./Task1_Menu.sh
-    exit 0;
+    ./PerformanceReviewMenu.sh; exit 0;
 fi
 
 echo -en "TO   (${GREEN}mm-yyyy${NC}): " 
@@ -95,8 +77,7 @@ while [[ !($to =~ $REGEX_PERIOD) ]]; do
 done
 
 if [[ $to == 'q' ]]; then
-    ./Task1_Menu.sh
-    exit 0;
+    ./PerformanceReviewMenu.sh; exit 0;
 fi
 
 if [[ $(checkDate "$to" "$from") == 0 ]]; then
@@ -129,7 +110,7 @@ while
 	
 	#If user quit
 	if [ $icNo == 'q' ]; then
-		./Task1_Menu.sh
+		./PerformanceReviewMenu.sh; exit 0
 	fi
 	
 	#Loop while IC format is not correct
@@ -139,7 +120,7 @@ done
 
 employeeFound=0
 
-if [ -f "$filename" -a -r "$filename" ]; then
+if [ -f "$employeeFile" -a -r "$employeeFile" ]; then
     while IFS=':' read -r empDep empIc empName empPh empEmail empGender empDob empJb empJoinDate ; do
         if [ "$icNo" == "${empIc//[[:blank:]]/}" ]; then
             name=$empName
@@ -148,7 +129,7 @@ if [ -f "$filename" -a -r "$filename" ]; then
             employeeFound=1
             break
         fi
-    done < "$filename"
+    done < "$employeeFile"
 fi
 
 if [[ employeeFound -eq 1 ]]; then
@@ -160,7 +141,7 @@ if [[ employeeFound -eq 1 ]]; then
 
 	while
 	echo; echo -en "Press (${GREEN}n${NC}) to continue to the Employee Performance Review Form or (${RED}q${NC}) to quit from the prompt and return to Human Resource Management Menu: "
-	read -n 1 response
+	read -n 1 response; response=$(echo "$response" | tr 'A-Z' 'a-z')
 
 	if [[ !($response =~ $REGEX_RESPONSE)  ]]; then
 		echo;echo; echo -e "Please enter either (${GREEN}n${NC}) or (${RED}q${NC})"
@@ -175,8 +156,7 @@ if [[ employeeFound -eq 1 ]]; then
 
     case "$response" in
     [qQ])
-        ./Task1_Menu.sh
-        ;;
+        ./PerformanceReviewMenu.sh; exit 0;;
     [nN])
         #Check if the period already exists(matches), then ask to override or return.
 		#A check to see if the entered period falls within existing files...?

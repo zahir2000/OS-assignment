@@ -2,7 +2,7 @@
 
 clear
 chmod u+x "Task2_AddNewEmployee.sh"; chmod u+x "Task3_AddNewKPI.sh"
-chmod u+x "EmpValidationForm.sh"
+chmod u+x "EmpValidationForm.sh"; chmod u+x "PerformanceReviewMenu.sh"
 
 echo "=============================="
 echo "Human Resouces Management Menu"
@@ -22,8 +22,8 @@ read choice
 case "$choice" in
     E) ./Task2_AddNewEmployee.sh;;
     K) ./Task3_AddNewKPI.sh;;
-    R) ./EmpValidationForm.sh;;
-    Q) exit 0;;
+    R) ./PerformanceReviewMenu.sh;;
+    Q) printf "\nSuccessfully quit the program."; sleep 2; exit 0;;
     *) echo; echo "Invalid choice! Please select E, K, R or Q."
 esac
 done
