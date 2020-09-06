@@ -4,7 +4,7 @@
 clear
 
 printf "%s\n" "+————————————————————————————————————————————————+"
-printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Search           " "|"
+printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Delete           " "|"
 printf "%s\n\n" "+————————————————————————————————————————————————+"
 
 while
@@ -38,38 +38,44 @@ if [[ $employeeFound -eq 1 ]]; then
     if [[ resultCounter -ne 0 ]]; then
     
         while
-            printf "\nWhich file would you like to see (1 - $resultCounter): "
-            read openFile; openFile=$(echo "$openFile" | tr 'A-Z' 'a-z')
+            printf "\nWhich file would you like to ${RED}delete${NC} (1 - $resultCounter): "
+            read deleteFile; deleteFile=$(echo "$deleteFile" | tr 'A-Z' 'a-z')
 
-            if [[ $openFile == 'q' ]]; then
+            if [[ $deleteFile == 'q' ]]; then
                 ./PerformanceReviewMenu.sh
                 exit 0
             fi
 
-            if [[ $openFile -lt 1 || $openFile -gt $resultCounter ]]; then
+            if [[ $deleteFile -lt 1 || $deleteFile -gt $resultCounter ]]; then
                 printf "\n${LIGHTRED}Incorrect file number selected.${NC}\nPlease ensure it is within (${GREEN}1 - $resultCounter${NC})\n"
             fi
 
-        [[ $openFile -lt 1 || $openFile -gt $resultCounter ]]
+        [[ $deleteFile -lt 1 || $deleteFile -gt $resultCounter ]]
         do :
         done
 
-        openFile=$(( $openFile - 1 ))
-        resultFile="${icNo}KPIResult/${files[$openFile]}.txt"
+        deleteFile=$(( $deleteFile - 1 ))
+        resultFile="${icNo}KPIResult/${files[$deleteFile]}.txt"
 
-        if [[ -f "$resultFile" && -r "$resultFile" ]]; then
-            printf "\n${WHITE}================================================================================${WHITEBACKGROUND}\n\n"
-            cat "$resultFile"
-            echo -e "${WHITE}\n================================================================================${NC}"
-        else
-            echo -e "${RED}An error has occured. Please contact the administrator!${NC}"
-        fi
-
-        anotherFile="x"
-        printf "\n${UNDERLINEBOLDYELLOW}Would you like to see another file?${NC}"
+        printf "\nAre you sure you want to delete ${RED}${files[$deleteFile]}${NC}?"
 
         while
-            printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+            printf "\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+            read -n1 confirmChoice; confirmChoice=$(echo "$confirmChoice" | tr 'A-Z' 'a-z')
+
+            if [[ "$confirmChoice" == "y" ]]; then
+                rm -f $resultFile
+            fi
+
+        [[ "$confirmChoice" != "y" && "$confirmChoice" != "n" ]]
+        do :
+        done
+
+        anotherFile="x"
+        printf "\n\n${UNDERLINEBOLDYELLOW}Would you like to delete another file?${NC}"
+
+        while
+            printf "\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
             read -n1 anotherFile; anotherFile=$(echo "$anotherFile" | tr 'A-Z' 'a-z')
 
             if [[ "$anotherFile" == "n" ]]; then
@@ -78,7 +84,7 @@ if [[ $employeeFound -eq 1 ]]; then
             elif [[ "$anotherFile" == "y" ]]; then
                 clear
                 printf "%s\n" "+————————————————————————————————————————————————+"
-                printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Search           " "|"
+                printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Delete           " "|"
                 printf "%s\n" "+————————————————————————————————————————————————+"
             fi
 
@@ -101,7 +107,7 @@ if [[ $employeeFound -eq 1 ]]; then
                 employeeFound=0
                 clear
                 printf "%s\n" "+————————————————————————————————————————————————+"
-                printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Search           " "|"
+                printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Delete           " "|"
                 printf "%s\n\n" "+————————————————————————————————————————————————+"
             fi
 
