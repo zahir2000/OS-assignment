@@ -325,45 +325,49 @@ fi
 if [[ $response == 'b' ]]; then
     isAddMore=0
 
-    printf "\n\n${LIGHTYELLOW}Would you like to see the created Employee Performance Review?${NC}"
+    if [[ $kpiCounter -ne 0 ]]; then
+        printf "\n\n${LIGHTYELLOW}Would you like to see the created Employee Performance Review?${NC}"
 
-    while
-        printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
-        read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
-        
-        if [[ "$choice" == "y" ]]; then
-            clear
-            printf "\n%50s\n%52s\n" "Employee Performance Review" "==============================="
-            printf "\nEmployee IC. Number    : $icNo\n"
-            printf "Employee Name          : $name\n"
-            printf "Review Period          : From $from To $to\n\n"
-            printf "==============================================================================\n"
-            printf "%-26s %-28s %-22s\n" "KPI Criteria:" "Rate Obtained:" "Comments:"
-            printf "==============================================================================\n"
+        while
+            printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+            read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+            
+            if [[ "$choice" == "y" ]]; then
+                clear
+                printf "\n%50s\n%52s\n" "Employee Performance Review" "==============================="
+                printf "\nEmployee IC. Number    : $icNo\n"
+                printf "Employee Name          : $name\n"
+                printf "Review Period          : From $from To $to\n\n"
+                printf "==============================================================================\n"
+                printf "%-26s %-28s %-22s\n" "KPI Criteria:" "Rate Obtained:" "Comments:"
+                printf "==============================================================================\n"
 
-            i=0; avgRatingScore=0
-            while [ $i -lt ${#kpiCriteria[@]} ]; do
-                printf "%-32s %-22s %-22s\n" "${kpiCriteria[$i]}" "${perfRate[$i]}" "${perfComment[$i]}"
-                avgRatingScore=$(( $avgRatingScore+${perfRate[$i]} ))
-                i=$(( $i+1 ))
-            done
+                i=0; avgRatingScore=0
+                while [ $i -lt ${#kpiCriteria[@]} ]; do
+                    printf "%-32s %-22s %-22s\n" "${kpiCriteria[$i]}" "${perfRate[$i]}" "${perfComment[$i]}"
+                    avgRatingScore=$(( $avgRatingScore+${perfRate[$i]} ))
+                    i=$(( $i+1 ))
+                done
 
-            avgRatingScore=$(( $avgRatingScore / ${#perfRate[@]} ))
-            echo; echo "Average Performance Rating Score: $avgRatingScore"
-            perfAdj=$(getStaffPerformance $avgRatingScore)
-            echo; echo "Overall staff performance: $perfAdj"; echo; echo
+                avgRatingScore=$(( $avgRatingScore / ${#perfRate[@]} ))
+                echo; echo "Average Performance Rating Score: $avgRatingScore"
+                perfAdj=$(getStaffPerformance $avgRatingScore)
+                echo; echo "Overall staff performance: $perfAdj"; echo; echo
 
-            printf "${LIGHTYELLOW}Press any key to continue ${NC}"
-            read -n 1 -s -r -p ""
+                printf "${LIGHTYELLOW}Press any key to continue ${NC}"
+                read -n 1 -s -r -p ""
 
-            ./EmpValidationForm.sh; exit 0
-        elif [[ "$choice" == "n" ]]; then
-            ./EmpValidationForm.sh; exit 0
-        fi
+                ./EmpValidationForm.sh; exit 0
+            fi
+    
+        [[ "$choice" != "y" && "$choice" != "n" ]]
+        do :
+        done
+    else
+        rm -f "${icNo}KPIResult/$from-$to.txt"
+    fi
 
-    [[ "$choice" != "y" && "$choice" != "n" ]]
-    do :
-    done
+    ./EmpValidationForm.sh; exit 0
 fi
     
 clear
