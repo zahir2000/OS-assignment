@@ -2,10 +2,9 @@
 . ./permissions.sh
 clear
 
-echo "=========================================="
-echo -n "Welcome to the HR Management Login Screen!"
-echo
-echo "=========================================="
+printf "%s\n" "+————————————————————————————————————————————————+"
+printf "%s %s %s\n" "|" "  Welcome to the HR Management Login Screen!  " "|"
+printf "%s\n" "+————————————————————————————————————————————————+"
 echo
 
 wrong="Wrong Login"

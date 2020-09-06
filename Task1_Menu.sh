@@ -2,9 +2,9 @@
 
 clear
 
-echo "=============================="
-echo "Human Resouces Management Menu"
-echo "=============================="
+printf "%s\n" "+————————————————————————————————————————————————+"
+printf "%s %s %s\n" "|" "        Human Resouces Management Menu        " "|"
+printf "%s\n" "+————————————————————————————————————————————————+"
 echo "E - Add New Employees"
 echo "K - Add New Key Performance Indicator (KPI)"
 echo "R - Performance Review"
@@ -21,7 +21,7 @@ case "$choice" in
     E) ./Task2_AddNewEmployee.sh;;
     K) ./Task3_AddNewKPI.sh;;
     R) ./PerformanceReviewMenu.sh;;
-    Q) printf "\nSuccessfully quit the program."; sleep 2; exit 0;;
+    Q) printf "\nSuccessfully quit the program."; sleep 2; echo; exit 0;;
     *) echo; echo "Invalid choice! Please select E, K, R or Q."
 esac
 done

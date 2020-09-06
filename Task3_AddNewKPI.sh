@@ -6,9 +6,9 @@ while [ "$addKPI" = "Y" ]; do
 declare -a kpiArray
 mapfile -t kpiArray < KPI.txt
 
-echo "============================================"
-echo "Add New Key Performance Indicator (KPI) Form"
-echo "============================================"
+printf "%s\n" "+————————————————————————————————————————————————+"
+printf "%s %s %s\n" "|" " Add New Key Performance Indicator (KPI) Form " "|"
+printf "%s\n" "+————————————————————————————————————————————————+"
 echo "KPI Code (Auto generated) :" $(printf "KPI_%02d" "$((${#kpiArray[@]} + 1))")
 echo -n "KPI Evaluation Criteria   : "
 read KPICriteria

@@ -2,9 +2,9 @@
 clear
 choice=r
 
-echo "========================="
-echo "Department Selection Menu"
-echo "========================="
+printf "%s\n" "+————————————————————————————————————————————————+"
+printf "%s %s %s\n" "|" "           Department Selection Menu          " "|"
+printf "%s\n" "+————————————————————————————————————————————————+"
 echo "P - PD (Production Department)"
 echo "U - PU (Purchasing Department)"
 echo "S - SM (Sales and Marketing Department)"

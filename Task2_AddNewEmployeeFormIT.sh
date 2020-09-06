@@ -8,9 +8,9 @@ error="Got Error"
 while [ "$error" = "Got Error" ]
 do
 error="No Error"
-echo "=========================="
-echo "Add New Employee Form (IT)"
-echo "=========================="
+printf "%s\n" "+————————————————————————————————————————————————+"
+printf "%s %s %s\n" "|" "          Add New Employee Form (IT)          " "|"
+printf "%s\n" "+————————————————————————————————————————————————+"
 echo -n "Employee IC.Number (001025-10-9999) : "
 read ICNo
 
