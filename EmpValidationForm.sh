@@ -192,7 +192,7 @@ if [[ employeeFound -eq 1 ]]; then
 					entryFrom=$( echo $file | cut -d "-" -f 2 )$( echo $file | cut -d "-" -f 1 )
 					entryTo=$( echo $file | cut -d "-" -f 4 )$( echo $file | cut -d "-" -f 3 )
 
-					if [[ $(compareDate $entryFrom $entryTo $origFrom) == 1 || $(compareDate $entryFrom $entryTo $origTo) == 1 ]]; then
+					if [[ $(compareDate $origFrom $origTo $entryFrom) == 1 || $(compareDate $origFrom $origTo $entryTo) == 1 ]]; then
 						if [ $clashCounter -eq 0 ]; then
 							printf "${BOLDYELLOW}Warning${NC}\n"
 							printf "The entered period (${GREEN}$from${NC} to ${GREEN}$to${NC}) clashes with the following employee review periods:\n"
