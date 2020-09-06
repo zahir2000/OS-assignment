@@ -25,7 +25,7 @@ if [[ $employeeFound -eq 1 ]]; then
     resultCounter=0; files=()
     if [[ -d "${icNo}KPIResult" && -r "${icNo}KPIResult" ]]; then
         filesCount=$(( $( ls -l "${icNo}KPIResult/" | wc -l ) - 1 ))
-        #ls "${icNo}KPIResult/" | sort -k1.4,1.7 
+        
         for entry in "${icNo}KPIResult"/*
         do
             file=$( echo ${entry} | cut -d "/" -f 2 | cut -d "." -f 1 )

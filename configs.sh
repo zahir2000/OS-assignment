@@ -27,7 +27,7 @@ REGEX_IC="^([0-9]{6}-[0-9]{2}-[0-9]{4})$|^(q)$"
 REGEX_PERIOD="^(((0[1-9])|(1[0-2]))-[12][0-9]{3})$|^(q)$"
 REGEX_RESPONSE="^(n|q)$"
 REGEX_KPI="^(KPI_[0-9]{2})$|^(q|Q)$"
-REGEX_RATE="^(([0-9]|10)|(q|Q))$"
+REGEX_RATE="^(([0-9]|10)$|^(q))$"
 REGEX_RESPONSE_PRF="^(y|b)$"
 REGEX_CHOICE="^(m)$|^(d)$|^(r)$"
 

@@ -1,13 +1,7 @@
 #!/bin/bash
 
 clear
-
 . ./configs.sh
-
-#name="Zahir Sher"
-#icNo="111111-11-1111"
-#to="08-2000"
-#from="01-2000"
 
 name="$1"
 icNo="$2"
@@ -15,7 +9,6 @@ to="$3"
 from="$4"
 
 kpiCounter=0
-
 isFirstTime=1
 isAddMore=1
 
@@ -44,8 +37,7 @@ getStaffPerformance() {
 
 while
 
-kpiDeleted=0
-kpiModified=0
+kpiDeleted=0; kpiModified=0
 
 printf "%s\n" "+————————————————————————————————————————————————+"
 printf "%s ${BOLD}%s${NC} %s\n" "|" "       Employee Performance Review Form       " "|"
@@ -55,8 +47,8 @@ printf "|  ${BOLD}%-13s ${BLUE}%30s${NC}  |\n" "Name" "$name"
 printf "|  ${BOLD}%-25s ${BLUE}%18s${NC}  |\n" "Period" "$from to $to"
 printf "%s\n" "+————————————————————————————————————————————————+"
 
-inCounter=0
-inAvgScore=0
+inCounter=0; inAvgScore=0
+
 while [[ $inCounter -lt ${#kpiCriteria[@]} ]]; do
     printf "|  %-38s %5s  |\n" "${kpiCriteria[$inCounter]}" "${perfRate[$inCounter]}"
     inAvgScore=$(( $inAvgScore+${perfRate[$inCounter]} ))
@@ -74,14 +66,13 @@ done
 while
 while
 
-echo; echo "Please enter the KPI Code:-"
-echo -en "(${GREEN}KPI_XX${NC}): "
-read inKpiCode
-inKpiCode=$(echo "$inKpiCode" | tr 'a-z' 'A-Z')
+    echo; echo "Please enter the KPI Code:-"
+    echo -en "(${GREEN}KPI_XX${NC}): "
+    read inKpiCode; inKpiCode=$( echo "$inKpiCode" | tr 'a-z' 'A-Z' )
 
-if [[ !($inKpiCode =~ $REGEX_KPI) ]]; then
-	echo; printf "${RED}Incorrect KPI Code entered.${NC}\nPlease follow (${GREEN}KPI_XX${NC}) format\n"
-fi
+    if [[ !($inKpiCode =~ $REGEX_KPI) ]]; then
+        echo; printf "${RED}Incorrect KPI Code entered.${NC}\nPlease follow (${GREEN}KPI_XX${NC}) format\n"
+    fi
 
 [[ !($inKpiCode =~ $REGEX_KPI) ]]
 do :
@@ -247,7 +238,7 @@ if [[ $kpiDeleted -eq 0 && $kpiModified -eq 0 ]]; then
     while
 
     echo; echo -en "Please enter the Rate obtained (${ITALIC}min 0 - max 10${NC}): "
-    read rate
+    read rate; rate=$(echo "$rate" | tr 'A-Z' 'a-z')
 
     if [[ !($rate =~ $REGEX_RATE) ]]; then
         echo; echo -e "${RED}Rate must be between ${BLUE}0 - 10${RED}. Enter (${YELLOW}q${RED}) to quit.${NC}";
@@ -260,7 +251,6 @@ if [[ $kpiDeleted -eq 0 && $kpiModified -eq 0 ]]; then
     fi
 
     [[ !($rate =~ $REGEX_RATE) ]]
-
     do :
     done
 
@@ -287,8 +277,6 @@ while
 
 do :
 done
-
-#Check if response is Y or B
 
 if [ $isFirstTime -eq 1 -a -n "$name" -a -n "$icNo" -a -n "$to" -a -n "$from" ]; then
     ( 
@@ -326,7 +314,7 @@ if [[ $response == 'b' ]]; then
     isAddMore=0
 
     if [[ $kpiCounter -ne 0 ]]; then
-        printf "\n\n${LIGHTYELLOW}Would you like to see the created Employee Performance Review?${NC}"
+        printf "\n\n${YELLOW}Would you like to see the created Employee Performance Review?${NC}"
 
         while
             printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
@@ -354,7 +342,7 @@ if [[ $response == 'b' ]]; then
                 perfAdj=$(getStaffPerformance $avgRatingScore)
                 echo; echo "Overall staff performance: $perfAdj"; echo; echo
 
-                printf "${LIGHTYELLOW}Press any key to continue ${NC}"
+                printf "${YELLOW}Press any key to continue ${NC}"
                 read -n 1 -s -r -p ""
 
                 ./EmpValidationForm.sh; exit 0

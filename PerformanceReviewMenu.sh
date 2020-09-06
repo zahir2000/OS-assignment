@@ -1,9 +1,8 @@
 #!/bin/bash
 
 . ./configs.sh
-
-errCounter=0
 clear
+errCounter=0
 
 printf "%s\n" "+————————————————————————————————————————————————+"
 printf "%s ${BOLD}%s${NC} %s\n" "|" "       Employee Performance Review Menu       " "|"
