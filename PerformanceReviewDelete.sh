@@ -66,6 +66,7 @@ if [[ $employeeFound -eq 1 ]]; then
 
             if [[ "$confirmChoice" == "y" ]]; then
                 rm -f $resultFile
+                filesCount=$(( $filesCount - 1 ))
                 printf "${GREEN}\n\nFile (${BOLDGREEN}$fileOutput${GREEN}) successfully deleted.${NC}"
             fi
 
@@ -74,24 +75,31 @@ if [[ $employeeFound -eq 1 ]]; then
         done
 
         anotherFile="x"
-        printf "\n\n${UNDERLINEBOLDYELLOW}Would you like to delete another file?${NC}"
 
-        while
-            printf "\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
-            read -n1 anotherFile; anotherFile=$(echo "$anotherFile" | tr 'A-Z' 'a-z')
+        if [[ $filesCount -ne 0 ]]; then
+            printf "\n\n${UNDERLINEBOLDYELLOW}Would you like to delete another file?${NC}"
 
-            if [[ "$anotherFile" == "n" ]]; then
-                ./PerformanceReviewMenu.sh; exit 0
-            elif [[ "$anotherFile" == "y" ]]; then
-                clear
-                printf "%s\n" "+————————————————————————————————————————————————+"
-                printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Delete           " "|"
-                printf "%s\n" "+————————————————————————————————————————————————+"
-            fi
+            while
+                printf "\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+                read -n1 anotherFile; anotherFile=$(echo "$anotherFile" | tr 'A-Z' 'a-z')
 
-        [[ "$anotherFile" != "y" && "$anotherFile" != "n" ]]
-        do :
-        done
+                if [[ "$anotherFile" == "n" ]]; then
+                    ./PerformanceReviewMenu.sh; exit 0
+                elif [[ "$anotherFile" == "y" ]]; then
+                    clear
+                    printf "%s\n" "+————————————————————————————————————————————————+"
+                    printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Delete           " "|"
+                    printf "%s\n" "+————————————————————————————————————————————————+"
+                fi
+
+            [[ "$anotherFile" != "y" && "$anotherFile" != "n" ]]
+            do :
+            done
+        else
+            rmdir "${icNo}KPIResult"
+            printf "\n\nNo more KPI results left for ${BLUE}$icNo${NC}.\n${GREEN}Returning to Performance Review Menu."; sleep 1; printf "."; sleep 1; printf ".${NC}"
+            sleep 1; ./PerformanceReviewMenu.sh; exit 0
+        fi
     else
         echo -e "${ITALIC}No KPI results found.${NC}"
 

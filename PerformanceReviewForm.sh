@@ -353,6 +353,7 @@ if [[ $response == 'b' ]]; then
         done
     else
         rm -f "${icNo}KPIResult/$from-$to.txt"
+        rmdir "${icNo}KPIResult"
     fi
 
     ./EmpValidationForm.sh; exit 0
