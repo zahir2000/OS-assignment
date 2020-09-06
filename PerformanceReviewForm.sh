@@ -114,102 +114,104 @@ elif [[ $kpiDuplicated -eq 1 ]]; then
     while
         case "$dupChoice" in
             m)
-                mod=0
-                while [ $mod -lt ${#kpiCode[@]} ]; do
-                    if [[ "$inKpiCode" == ${kpiCode[$mod]} ]]; then
-                        modOrigRate=${perfRate[$mod]}
-                        break
-                    fi
-                    mod=$(( $mod+1 ))
-                done
+            mod=0
+            while [ $mod -lt ${#kpiCode[@]} ]; do
+                if [[ "$inKpiCode" == ${kpiCode[$mod]} ]]; then
+                    modOrigRate=${perfRate[$mod]}
+                    break
+                fi
+                mod=$(( $mod+1 ))
+            done
 
-                while
-                while
+            while
+            while
 
-                    printf "\n\nPlease enter the ${BOLDGREEN}new${NC} Rate obtained (${ITALIC}min 0 - max 10${NC}): "
-                    read modRate
+                printf "\n\nPlease enter the ${BOLDGREEN}new${NC} Rate obtained (${ITALIC}min 0 - max 10${NC}): "
+                read modRate
 
-                    if [[ !($modRate =~ $REGEX_RATE) ]]; then
-                        printf "\n${RED}Rate must be between ${BLUE}0 - 10${RED}. Enter (${YELLOW}q${RED}) to quit.${NC}";
-                    fi
+                if [[ !($modRate =~ $REGEX_RATE) ]]; then
+                    printf "\n${RED}Rate must be between ${BLUE}0 - 10${RED}. Enter (${YELLOW}q${RED}) to quit.${NC}";
+                fi
 
-                    if [ "$modRate" == "q" ]; then
-                        isAddMore=0
-                        ./EmpValidationForm.sh; exit 0
-                    fi
+                if [ "$modRate" == "q" ]; then
+                    isAddMore=0
+                    ./EmpValidationForm.sh; exit 0
+                fi
 
-                [[ !($modRate =~ $REGEX_RATE) ]]
+            [[ !($modRate =~ $REGEX_RATE) ]]
 
-                do :
-                done
+            do :
+            done
 
-                if [[ $modOrigRate -eq $modRate ]]; then
-                    printf "\n${RED}The ${BOLDGREEN}new${RED} rate cannot be same as original rate. Please re-enter.${NC}"
-                fi  
+            if [[ $modOrigRate -eq $modRate ]]; then
+                printf "\n${RED}The ${BOLDGREEN}new${RED} rate cannot be same as original rate. Please re-enter.${NC}"
+            fi  
 
-                [[ $modOrigRate -eq $modRate ]]
+            [[ $modOrigRate -eq $modRate ]]
 
-                do :
-                done
+            do :
+            done
 
-                echo; echo -n "Comments (if any): "; read modComments;
+            echo; echo -n "Comments (if any): "; read modComments;
 
-                printf "\nAre you sure you want to modify the rate from ${RED}$modOrigRate${NC} to ${GREEN}$modRate${NC}"
-                
-                while
-                    printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
-                    read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+            printf "\nAre you sure you want to modify the rate from ${RED}$modOrigRate${NC} to ${GREEN}$modRate${NC}"
+            
+            while
+                printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+                read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
 
-                    if [[ "$choice" == "y" ]]; then
-                        perfRate[$mod]="$modRate"
-                        
-                        if [ -n "$modComments" ]; then
-                            perfComment[$mod]="$modComments"
-                        fi
-
-                        kpiModified=1
-                        printf "\n\n${BOLDGREEN}KPI Rate successfuly modified.${NC}\n"
-                    elif [[ "$choice" == "n" ]]; then
-                        echo
+                if [[ "$choice" == "y" ]]; then
+                    perfRate[$mod]="$modRate"
+                    
+                    if [ -n "$modComments" ]; then
+                        perfComment[$mod]="$modComments"
                     fi
 
-                [[ "$choice" != "y" && "$choice" != "n" ]]
-                do :
-                done
-                ;;
+                    kpiModified=1
+                    printf "\n\n${BOLDGREEN}KPI Rate successfuly modified.${NC}\n"
+                elif [[ "$choice" == "n" ]]; then
+                    echo
+                fi
+
+            [[ "$choice" != "y" && "$choice" != "n" ]]
+            do :
+            done
+            ;;
+
             d)
-                del=0
-                while [ $del -lt ${#kpiCode[@]} ]; do
-                    if [[ "$inKpiCode" == ${kpiCode[$del]} ]]; then
-                        delCriteria=${kpiCriteria[$del]}
-                        delRate=${perfRate[$del]}
-                        break
-                    fi
-                    del=$(( $del+1 ))
-                done
-                printf "\n\n${UNDERLINE}Are you sure you want to delete${NC}:\n=> ${BOLDBLUE}$inKpiCode${NC} (${BLUE}$delCriteria${NC}) with rate of ${BOLDPURPLE}$delRate${NC}"
-                
-                while
-                    printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
-                    read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+            del=0
+            while [ $del -lt ${#kpiCode[@]} ]; do
+                if [[ "$inKpiCode" == ${kpiCode[$del]} ]]; then
+                    delCriteria=${kpiCriteria[$del]}
+                    delRate=${perfRate[$del]}
+                    break
+                fi
+                del=$(( $del+1 ))
+            done
+            printf "\n\n${UNDERLINE}Are you sure you want to delete${NC}:\n=> ${BOLDBLUE}$inKpiCode${NC} (${BLUE}$delCriteria${NC}) with rate of ${BOLDPURPLE}$delRate${NC}"
+            
+            while
+                printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+                read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
 
-                    if [[ "$choice" == "y" ]]; then
-                        kpiCode=(${kpiCode[@]:0:$del} ${kpiCode[@]:$(($del + 1))})
-                        kpiCriteria=(${kpiCriteria[@]:0:$del} ${kpiCriteria[@]:$(($del + 1))})
-                        perfComment=(${perfComment[@]:0:$del} ${perfComment[@]:$(($del + 1))})
-                        perfRate=(${perfRate[@]:0:$del} ${perfRate[@]:$(($del + 1))})
-                        kpiCounter=$(( $kpiCounter - 1 ))
-                        kpiDeleted=1
+                if [[ "$choice" == "y" ]]; then
+                    kpiCode=(${kpiCode[@]:0:$del} ${kpiCode[@]:$(($del + 1))})
+                    kpiCriteria=(${kpiCriteria[@]:0:$del} ${kpiCriteria[@]:$(($del + 1))})
+                    perfComment=(${perfComment[@]:0:$del} ${perfComment[@]:$(($del + 1))})
+                    perfRate=(${perfRate[@]:0:$del} ${perfRate[@]:$(($del + 1))})
+                    kpiCounter=$(( $kpiCounter - 1 ))
+                    kpiDeleted=1
 
-                        printf "\n\n${BOLDGREEN}KPI successfuly deleted.${NC}\n"
-                    elif [[ "$choice" == "n" ]]; then
-                        echo
-                    fi
+                    printf "\n\n${BOLDGREEN}KPI successfuly deleted.${NC}\n"
+                elif [[ "$choice" == "n" ]]; then
+                    echo
+                fi
 
-                [[ "$choice" != "y" && "$choice" != "n" ]]
-                do :
-                done
-                ;;
+            [[ "$choice" != "y" && "$choice" != "n" ]]
+            do :
+            done
+            ;;
+
             r)
                 echo
                 ;;
@@ -280,13 +282,13 @@ done
 
 if [ $isFirstTime -eq 1 -a -n "$name" -a -n "$icNo" -a -n "$to" -a -n "$from" ]; then
     ( 
-        printf "%50s\n%52s\n" "Employee Performance Review" "==============================="
-        printf "\nEmployee IC. Number    : $icNo\n"
-        printf "Employee Name          : $name\n"
-        printf "Review Period          : From $from To $to\n\n"
-        printf "==============================================================================\n"
-        printf "%-26s %-28s %-22s\n" "KPI Criteria:" "Rate Obtained:" "Comments:"
-        printf "==============================================================================\n"
+    printf "%50s\n%52s\n" "Employee Performance Review" "==============================="
+    printf "\nEmployee IC. Number    : $icNo\n"
+    printf "Employee Name          : $name\n"
+    printf "Review Period          : From $from To $to\n\n"
+    printf "==============================================================================\n"
+    printf "%-26s %-28s %-22s\n" "KPI Criteria:" "Rate Obtained:" "Comments:"
+    printf "==============================================================================\n"
     ) > "${icNo}KPIResult/$from-$to.txt"
     isFirstTime=0
 fi
@@ -317,36 +319,37 @@ if [[ $response == 'b' ]]; then
         printf "\n\n${YELLOW}Would you like to see the created Employee Performance Review?${NC}"
 
         while
-            printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
-            read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
             
-            if [[ "$choice" == "y" ]]; then
-                clear
-                printf "\n%50s\n%52s\n" "Employee Performance Review" "==============================="
-                printf "\nEmployee IC. Number    : $icNo\n"
-                printf "Employee Name          : $name\n"
-                printf "Review Period          : From $from To $to\n\n"
-                printf "==============================================================================\n"
-                printf "%-26s %-28s %-22s\n" "KPI Criteria:" "Rate Obtained:" "Comments:"
-                printf "==============================================================================\n"
+        printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+        read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+        
+        if [[ "$choice" == "y" ]]; then
+            clear
+            printf "\n%50s\n%52s\n" "Employee Performance Review" "==============================="
+            printf "\nEmployee IC. Number    : $icNo\n"
+            printf "Employee Name          : $name\n"
+            printf "Review Period          : From $from To $to\n\n"
+            printf "==============================================================================\n"
+            printf "%-26s %-28s %-22s\n" "KPI Criteria:" "Rate Obtained:" "Comments:"
+            printf "==============================================================================\n"
 
-                i=0; avgRatingScore=0
-                while [ $i -lt ${#kpiCriteria[@]} ]; do
-                    printf "%-32s %-22s %-22s\n" "${kpiCriteria[$i]}" "${perfRate[$i]}" "${perfComment[$i]}"
-                    avgRatingScore=$(( $avgRatingScore+${perfRate[$i]} ))
-                    i=$(( $i+1 ))
-                done
+            i=0; avgRatingScore=0
+            while [ $i -lt ${#kpiCriteria[@]} ]; do
+                printf "%-32s %-22s %-22s\n" "${kpiCriteria[$i]}" "${perfRate[$i]}" "${perfComment[$i]}"
+                avgRatingScore=$(( $avgRatingScore+${perfRate[$i]} ))
+                i=$(( $i+1 ))
+            done
 
-                avgRatingScore=$(( $avgRatingScore / ${#perfRate[@]} ))
-                echo; echo "Average Performance Rating Score: $avgRatingScore"
-                perfAdj=$(getStaffPerformance $avgRatingScore)
-                echo; echo "Overall staff performance: $perfAdj"; echo; echo
+            avgRatingScore=$(( $avgRatingScore / ${#perfRate[@]} ))
+            echo; echo "Average Performance Rating Score: $avgRatingScore"
+            perfAdj=$(getStaffPerformance $avgRatingScore)
+            echo; echo "Overall staff performance: $perfAdj"; echo; echo
 
-                printf "${YELLOW}Press any key to continue ${NC}"
-                read -n 1 -s -r -p ""
+            printf "${YELLOW}Press any key to continue ${NC}"
+            read -n 1 -s -r -p ""
 
-                ./EmpValidationForm.sh; exit 0
-            fi
+            ./EmpValidationForm.sh; exit 0
+        fi
     
         [[ "$choice" != "y" && "$choice" != "n" ]]
         do :
