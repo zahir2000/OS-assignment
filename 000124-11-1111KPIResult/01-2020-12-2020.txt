@@ -3,13 +3,12 @@
 
 Employee IC. Number    : 000124-11-1111
 Employee Name          : Zahiriddin Rustamov
-Review Period          : From 03-2020 To 04-2020
+Review Period          : From 01-2020 To 12-2020
 
 ==============================================================================
 KPI Criteria:              Rate Obtained:               Comments:             
 ==============================================================================
 Knowledge of Work                10                     -                     
-Initiative                       10                     -                     
 
 Average Performance Rating Score: 10
 

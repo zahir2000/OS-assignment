@@ -109,9 +109,9 @@ elif [[ $kpiDuplicated -eq 1 ]]; then
         echo -e "(${GREEN}m${NC}) - Modify KPI Rate"
         echo -e "(${RED}d${NC}) - Delete KPI Rate"
         echo -e "(${YELLOW}r${NC}) - Select New KPI"
-        echo -n "Please select a choice: "; read -n1 dupChoice; dupChoice=$(echo "$dupChoice" | tr 'A-Z' 'a-z')
 
     while
+        echo -n "Please select a choice: "; read -n1 dupChoice; dupChoice=$(echo "$dupChoice" | tr 'A-Z' 'a-z')
         case "$dupChoice" in
             m)
             mod=0
@@ -217,7 +217,7 @@ elif [[ $kpiDuplicated -eq 1 ]]; then
                 ;;
             *)
                 printf "\n\nInvalid choice entered. Please enter (${GREEN}m${NC}) or (${RED}d${NC}) or (${YELLOW}r${NC}).\n\n"
-                echo -n "Please select a choice: "; read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
+                #echo -n "Please select a choice: "; read -n1 choice; choice=$(echo "$choice" | tr 'A-Z' 'a-z')
         esac
 
     [[ !($dupChoice =~ $REGEX_CHOICE) ]]

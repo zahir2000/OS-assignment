@@ -29,7 +29,7 @@ REGEX_RESPONSE="^(n|q)$"
 REGEX_KPI="^(KPI_[0-9]{2})$|^(q|Q)$"
 REGEX_RATE="^(([0-9]|10)$|^(q))$"
 REGEX_RESPONSE_PRF="^(y|b)$"
-REGEX_CHOICE="^(m)$|^(d)$|^(r)$"
+REGEX_CHOICE="^m$|^d$|^r$"
 
 #Text Files
 kpiFile="KPI.txt"

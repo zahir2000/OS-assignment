@@ -1,0 +1,15 @@
+                       Employee Performance Review
+                     ===============================
+
+Employee IC. Number    : 000124-11-1111
+Employee Name          : Zahiriddin Rustamov
+Review Period          : From 02-2006 To 03-2006
+
+==============================================================================
+KPI Criteria:              Rate Obtained:               Comments:             
+==============================================================================
+Knowledge of Work                5                      -                     
+
+Average Performance Rating Score: 5
+
+Overall staff performance: Satisfactory
