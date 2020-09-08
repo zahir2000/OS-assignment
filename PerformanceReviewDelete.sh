@@ -68,6 +68,8 @@ if [[ $employeeFound -eq 1 ]]; then
                 rm -f $resultFile
                 filesCount=$(( $filesCount - 1 ))
                 printf "${GREEN}\n\nFile (${BOLDGREEN}$fileOutput${GREEN}) successfully deleted.${NC}"
+            elif [[ "$confirmChoice" != "n" ]]; then
+                    printf "\n\nPlease enter either (${RED}y${NC})es or (${GREEN}n${NC})o.\n"
             fi
 
         [[ "$confirmChoice" != "y" && "$confirmChoice" != "n" ]]
@@ -90,6 +92,8 @@ if [[ $employeeFound -eq 1 ]]; then
                     printf "%s\n" "+————————————————————————————————————————————————+"
                     printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Delete           " "|"
                     printf "%s\n" "+————————————————————————————————————————————————+"
+                else
+                    printf "\n\nPlease enter either (${RED}y${NC})es or (${GREEN}n${NC})o.\n"
                 fi
 
             [[ "$anotherFile" != "y" && "$anotherFile" != "n" ]]

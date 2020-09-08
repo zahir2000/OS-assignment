@@ -59,7 +59,7 @@ if [[ $employeeFound -eq 1 ]]; then
         resultFile="${icNo}KPIResult/${files[$openFile]}.txt"
 
         if [[ -f "$resultFile" && -r "$resultFile" ]]; then
-            printf "\n${WHITE}================================================================================${WHITEBACKGROUND}\n\n"
+            printf "\n${WHITE}================================================================================${NC}\n\n"
             cat "$resultFile"
             echo -e "${WHITE}\n================================================================================${NC}"
         else
@@ -70,7 +70,7 @@ if [[ $employeeFound -eq 1 ]]; then
         printf "\n${UNDERLINEBOLDYELLOW}Would you like to see another file?${NC}"
 
         while
-            printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+            printf "\n\n(${GREEN}y${NC})es or (${RED}n${NC})o: "
             read -n1 anotherFile; anotherFile=$(echo "$anotherFile" | tr 'A-Z' 'a-z')
 
             if [[ "$anotherFile" == "n" ]]; then
@@ -81,6 +81,8 @@ if [[ $employeeFound -eq 1 ]]; then
                 printf "%s\n" "+————————————————————————————————————————————————+"
                 printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Search           " "|"
                 printf "%s\n" "+————————————————————————————————————————————————+"
+            else
+                    printf "\n\nPlease enter either (${GREEN}y${NC})es or (${RED}n${NC})o."
             fi
 
         [[ "$anotherFile" != "y" && "$anotherFile" != "n" ]]
@@ -92,7 +94,7 @@ if [[ $employeeFound -eq 1 ]]; then
         printf "\n${UNDERLINEBOLDYELLOW}Would you like to search again?${NC}"
 
         while
-            printf "\n\n(${RED}y${NC})es or (${GREEN}n${NC})o: "
+            printf "\n\n(${GREEN}y${NC})es or (${RED}n${NC})o: "
             read -n1 searchAgain; searchAgain=$(echo "$searchAgain" | tr 'A-Z' 'a-z')
 
             if [[ "$searchAgain" == "n" ]]; then
@@ -104,6 +106,8 @@ if [[ $employeeFound -eq 1 ]]; then
                 printf "%s\n" "+————————————————————————————————————————————————+"
                 printf "%s ${BOLD}%s${NC} %s\n" "|" "          Performance Review Search           " "|"
                 printf "%s\n\n" "+————————————————————————————————————————————————+"
+            else
+                    printf "\n\nPlease enter either (${GREEN}y${NC})es or (${RED}n${NC})o."
             fi
 
         [[ "$searchAgain" != "y" && "$searchAgain" != "n" ]]
